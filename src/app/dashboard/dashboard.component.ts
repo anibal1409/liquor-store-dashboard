@@ -25,26 +25,26 @@ import { optionMenu } from './models';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit, OnDestroy {
-  title = 'LABORATORIO BRIMON';
+  title = 'MI PROFE';
 
   optionList: Array<optionMenu> = [];
 
   pages = [
     {
-      path: '/dashboard/exam-types',
-      title: 'Tipos de examen',
+      path: '/dashboard/categories',
+      title: 'Categorías',
     },
     {
-      path: '/dashboard/exams',
-      title: 'Examenes',
+      path: '/dashboard/products',
+      title: 'Productos',
     },
     {
-      path: '/dashboard/studies',
-      title: 'Estudios',
+      path: '/dashboard/sales',
+      title: 'Ventas',
     },
     {
-      path: '/dashboard/patients',
-      title: 'Pacientes',
+      path: '/dashboard/customers',
+      title: 'Clientes',
     },
     {
       path: '/dashboard/statistics',
@@ -55,17 +55,31 @@ export class DashboardComponent implements OnInit, OnDestroy {
       title: 'Usuarios',
     },
     {
+      path: '/dashboard/orders',
+      title: 'Pedidos',
+    },
+    {
       path: '/dashboard/profile',
       title: 'Mi Perfil',
     },
     {
       path: 'dashboard/studies/form',
-      title: 'Formulario de estudio',
+      title: 'Formulario de venta',
     }
   ];
 
   sub$ = new Subscription();
-  user!: UserStateVM;
+  user: UserStateVM = {
+    email: 'user@user.com',
+    firstName: 'Administrador',
+    lastName: 'del sistema',
+    id: 0,
+    idDocument: '0',
+    name: '',
+    role: UserRole.Super,
+    loginStamp: 0,
+    roleText: 'Super',
+  };
 
   optionProfile: optionMenu = {
     icon: '',
@@ -93,7 +107,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         }
       })
     );
-    this.user = this.userStateService.getUser() as any;
+    // this.user = this.userStateService.getUser() as any;
     console.log(this.user);
     this.sub$.add(
       this.userStateService.getUser$().subscribe((user) => {
@@ -106,8 +120,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
       )
     );
     const role = this.userStateService.getRole();
-    if (role) {
-      this.optionList = MENU.filter((item) => (item.permissions.includes(role as any)))
+    if (role || true) {
+      this.optionList = MENU.filter((item) => (item.permissions.includes(role as any) || true))
       .sort((a, b) => {
         let sort = 0;
         if (a.name > b.name) {
@@ -141,7 +155,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     } else if (option) {
       this.router.navigate([`/dashboard/${option.value}`]);
     } else if (!option) {
-      this.title = 'LABORATORIO BRIMON';
+      this.title = 'MI PROFE';
     }
   }
 
@@ -150,7 +164,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     if (item) {
       this.title = item.title;
     } else {
-      this.title = 'LABORATORIO BRIMON';
+      this.title = 'MI PROFE';
     }
   }
 

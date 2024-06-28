@@ -1,0 +1,34 @@
+import { Injectable } from '@angular/core';
+
+import {
+  Observable,
+  of,
+} from 'rxjs';
+
+import {
+  BaseQuery,
+  UseCase,
+} from '../../../common/memory-repository';
+import { StudyMemoryService } from '../../memory/study-memory';
+import { StudyItemVM } from '../../models';
+
+@Injectable()
+export class GetStudiesService
+  implements UseCase<Array<StudyItemVM> | null, BaseQuery> {
+
+  constructor(
+    // private entityServices: StudiesService,
+    private memoryService: StudyMemoryService,
+  ) { }
+
+  exec(data: BaseQuery = {}): Observable<Array<StudyItemVM>> {
+    return of();
+    // return this.entityServices.studiesControllerFindAll()
+    //   .pipe(
+    //     map((entities: any) => entities.map(study2StudyItemVM)),
+    //     tap((entity) => {
+    //       this.memoryService.setDataSource(entity);
+    //     })
+    //   );
+  }
+}
