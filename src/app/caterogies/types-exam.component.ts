@@ -16,9 +16,9 @@ import {
 } from '../common';
 import { FormComponent } from './form';
 import {
+  CategoryItemVM,
   CategoryM,
   RowActionCategory,
-  TypeExamItemVM,
 } from './model';
 import { TypesExamService } from './types-exam.service';
 
@@ -28,7 +28,7 @@ import { TypesExamService } from './types-exam.service';
   styleUrls: ['./types-exam.component.scss']
 })
 export class TypesExamComponent implements OnInit, OnDestroy {
-  dataTable: TableDataVM<TypeExamItemVM> = {
+  dataTable: TableDataVM<CategoryItemVM> = {
     headers: [
       {
         columnDef: 'name',

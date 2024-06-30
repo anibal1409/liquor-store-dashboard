@@ -12,24 +12,24 @@ import {
   UseCase,
 } from '../../../common/memory-repository';
 import {
-  patientToPatientItemVM,
-} from '../../mappers/patient-2-patient-item-vm';
+  customerToCustomerItemVM,
+} from '../../mappers/customer-2-customer-item-vm';
 import { PatientMemoryService } from '../../memory';
-import { PatientItemVM } from '../../models/patient-item-vm';
+import { CustomerItemVM } from '../../models/customer-item-vm';
 
 @Injectable()
 export class GetPatientsService
-  implements UseCase<Array<PatientItemVM> | null, BaseQuery> {
+  implements UseCase<Array<CustomerItemVM> | null, BaseQuery> {
 
   constructor(
     private entityServices: CustomersService,
     private memoryService: PatientMemoryService,
   ) { }
 
-  exec(data: BaseQuery = {}): Observable<Array<PatientItemVM>> {
+  exec(data: BaseQuery = {}): Observable<Array<CustomerItemVM>> {
     return this.entityServices.customersControllerFindAll()
       .pipe(
-        map((entities: any) => entities.map(patientToPatientItemVM)),
+        map((entities: any) => entities.map(customerToCustomerItemVM)),
         tap((entity) => {
           this.memoryService.setDataSource(entity);
         })

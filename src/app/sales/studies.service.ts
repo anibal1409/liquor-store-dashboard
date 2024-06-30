@@ -10,10 +10,10 @@ import {
   ListComponentService,
 } from '../common/memory-repository';
 import { FindPatientByDocumentService } from '../customers/use-cases';
-import { ExamItemVM } from '../products';
+import { ProductItemVM } from '../products';
 import { GetExamsService } from '../products/use-cases/get-exams';
 import { StudyMemoryService } from './memory';
-import { StudyItemVM } from './models';
+import { SaleItemVM } from './models';
 import {
   CreateStudyService,
   DeleteStudyService,
@@ -23,7 +23,7 @@ import {
 } from './use-cases';
 
 @Injectable()
-export class StudiesService extends ListComponentService<StudyItemVM, BaseQuery> {
+export class StudiesService extends ListComponentService<SaleItemVM, BaseQuery> {
   constructor(
     public getEntityService: GetStudiesService,
     public memoryEntityService: StudyMemoryService,
@@ -53,7 +53,7 @@ export class StudiesService extends ListComponentService<StudyItemVM, BaseQuery>
     );
   }
 
-  getExams$(): Observable<Array<ExamItemVM>> {
+  getExams$(): Observable<Array<ProductItemVM>> {
     return this.getExamsService.exec();
   }
 }

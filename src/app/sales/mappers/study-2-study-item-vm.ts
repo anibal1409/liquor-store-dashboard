@@ -1,20 +1,28 @@
-import { patientToPatientItemVM } from '../../customers';
+import { customerToCustomerItemVM } from '../../customers';
 import {
-  StudyItemVM,
-  StudyVM,
+  SALE_EDIT,
+  SALE_NOT_EDIT,
+  SaleItemVM,
+  SaleVM,
 } from '../models';
-import { STAGE_STUDY_VALUE } from '../models/stage';
+import {
+  STAGE_STUDY_VALUE,
+  STAGES_ACTIVES,
+} from '../models/stage';
 import { study2StudyVM } from './study-2-study-vm';
 
-export function study2StudyItemVM(study: any): StudyItemVM {
-  const studyVM: StudyVM = study2StudyVM(study);
-  const patient = patientToPatientItemVM(study?.patient);
+export function study2StudyItemVM(sale: any): SaleItemVM {
+  const studyVM: SaleVM = study2StudyVM(sale);
+  const customer = customerToCustomerItemVM(sale?.customer);
   return { 
     ...studyVM,
-    patient,
-    patientName: patient?.name,
-    counterExams: studyVM?.studyExams?.length || 0,
-    stageText: STAGE_STUDY_VALUE[study?.stage]?.name,
-    statusText: study?.status ? 'Activo' : 'Inactivo',
+    customer: customer,
+    patientName: customer?.name,
+    counterExams: studyVM?.saleProducts?.length || 0,
+    stageText: STAGE_STUDY_VALUE[sale?.stage]?.name,
+    statusText: sale?.status ? 'Activo' : 'Inactivo',
+    options: { 
+      options: STAGES_ACTIVES.includes(sale?.stage) ? SALE_EDIT : SALE_NOT_EDIT ,
+    }
   }; 
 }

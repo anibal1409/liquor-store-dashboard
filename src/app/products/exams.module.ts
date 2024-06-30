@@ -1,4 +1,7 @@
-import { CommonModule } from '@angular/common';
+import {
+  CommonModule,
+  CurrencyPipe,
+} from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -9,6 +12,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+
+import { CurrencyMaskModule } from 'ng2-currency-mask';
 
 import { CategoriesModule } from '../caterogies';
 import { GetTypesExamService } from '../caterogies/use-cases';
@@ -48,7 +53,7 @@ import {
     StateModule,
     MatSelectModule,
     MatCheckboxModule,
-
+    CurrencyMaskModule,
     CategoriesModule,
   ],
   providers: [
@@ -59,9 +64,8 @@ import {
     FindExamService,
     GetExamsService,
     UpdateExamService,
-
-
     GetTypesExamService,
+    CurrencyPipe,
   ]
 })
 export class ExamsModule { }

@@ -11,19 +11,19 @@ import { UseCase } from '../../../common/memory-repository';
 import { typeExam2typeExamtemVM } from '../../mapper';
 import { TypesExamMemoryService } from '../../memory/types-exam-memory';
 import {
+  CategoryItemVM,
   CategoryM,
-  TypeExamItemVM,
 } from '../../model';
 
 @Injectable()
-export class CreateTypeExamService implements UseCase<TypeExamItemVM | null, CategoryM> {
+export class CreateTypeExamService implements UseCase<CategoryItemVM | null, CategoryM> {
 
   constructor(
     private httpService: CategoriesService,
     private memoryService: TypesExamMemoryService,
   ) { }
 
-  exec(data: CategoryM): Observable<TypeExamItemVM> {
+  exec(data: CategoryM): Observable<CategoryItemVM> {
     return this.httpService.categoriesControllerCreate(data)
       .pipe(
         map(typeExam2typeExamtemVM),

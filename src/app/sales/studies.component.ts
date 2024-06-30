@@ -18,8 +18,8 @@ import {
   TableService,
 } from '../common';
 import {
-  RowActionStudy,
-  StudyItemVM,
+  RowActionSale,
+  SaleItemVM,
 } from './models';
 import { StudiesService } from './studies.service';
 
@@ -34,11 +34,11 @@ export class StudiesComponent implements OnInit, OnDestroy {
       {
         columnDef: 'date',
         header: 'Fecha',
-        cell: (element: { [key: string]: string }) => `${moment(element['date']).format('DD/MM/YYYY')}`,
+        cell: (element: { [key: string]: string }) => `${moment(element['date']).format('DD/MM/YYYY HH:mm')}`,
       },
       {
         columnDef: 'patientName',
-        header: 'Paciente',
+        header: 'Cliente',
         cell: (element: { [key: string]: string }) => `${element['patientName']}`,
       },
       {
@@ -48,7 +48,7 @@ export class StudiesComponent implements OnInit, OnDestroy {
       },
       {
         columnDef: 'counterExams',
-        header: 'N. de Examenes',
+        header: 'N. de Productos',
         cell: (element: { [key: string]: string }) => `${element['counterExams']}`,
       },
       {
@@ -101,25 +101,25 @@ export class StudiesComponent implements OnInit, OnDestroy {
   
   clickAction(option: OptionAction) {
     switch (option.option.value) {
-      case RowActionStudy.update:
-        this.router.navigate(['/dashboard/studies/form'], {
+      case RowActionSale.update:
+        this.router.navigate(['/dashboard/sales/form'], {
           queryParams: {
             id: option.data['id'],
           }
         });
         break;
-      case RowActionStudy.delete:
+      case RowActionSale.delete:
         this.showConfirm(option.data as any);
         break;
     }
   }
 
-  showConfirm(item: StudyItemVM): void {
+  showConfirm(item: SaleItemVM): void {
     const dialogRef = this.matDialog.open(ConfirmModalComponent, {
       data: {
         message: {
-          title: 'Eliminar estudio',
-          body: `¿Está seguro que desea eliminar el estudio del paciente <strong>${item?.patientName}</strong>?`,
+          title: 'Eliminar venta',
+          body: `¿Está seguro que desea eliminar la venta de <strong>${item?.patientName}</strong>?`,
         },
       },
       hasBackdrop: true,

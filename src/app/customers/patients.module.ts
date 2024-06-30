@@ -13,6 +13,11 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 import {
+  NgxMaskDirective,
+  NgxMaskPipe,
+} from 'ngx-mask';
+
+import {
   StateModule,
   TableModule,
 } from '../common';
@@ -51,6 +56,8 @@ import {
     StateModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    NgxMaskDirective,
+    NgxMaskPipe,
   ],
   providers: [
     PatientsService,

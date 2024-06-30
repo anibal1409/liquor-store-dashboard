@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <span mat-dialog-title> {{ id ? 'Modificar':  'Crear' }} examen </span>
+  <span mat-dialog-title> {{ id ? 'Modificar':  'Crear' }} producto </span>
   <button
     id="modal-close-button"
     mat-dialog-close
@@ -41,46 +41,33 @@
 
   <mat-form-field class="">
     <mat-label>Precio</mat-label>
-    <input type="number" matInput formControlName="price" />
+    <input 
+      type="text"
+      matInput 
+      formControlName="price" 
+      currencyMask
+      [options]="optionsCurrency"
+     />
     <mat-error *ngIf="form.controls['price'].hasError('required')"
       >Campo requerido</mat-error
     >
   </mat-form-field>
 
-  <div class="d-flex align-items-center">
-    <mat-checkbox 
-      formControlName="unitedCheck"
-    ></mat-checkbox>
 
-    <mat-form-field class="">
-      <mat-label>Unidad</mat-label>
-      <input type="text" matInput formControlName="united" />
-      <mat-error *ngIf="form.controls['united'].hasError('required')"
-        >Campo requerido</mat-error
-      >
-    </mat-form-field>
-  </div>
-
-  <div class="d-flex align-items-center">
-    <mat-checkbox 
-      formControlName="valuesCheck"
-    ></mat-checkbox>
-
-    <mat-form-field class="">
-      <mat-label>Valores</mat-label>
-      <input type="text" matInput formControlName="values" />
-      <mat-error *ngIf="form.controls['values'].hasError('required')"
-        >Campo requerido</mat-error
-      >
-    </mat-form-field>
-  </div>
+  <mat-form-field class="">
+    <mat-label>Existencias</mat-label>
+    <input type="number" matInput formControlName="stock" />
+    <mat-error *ngIf="form.controls['stock'].hasError('required')"
+      >Campo requerido</mat-error
+    >
+  </mat-form-field>
 
   <mat-form-field>
-    <mat-label>Tipo</mat-label>
-    <mat-select formControlName="typesExam">
-      <mat-option *ngFor="let typeExam of typesExam" [value]="typeExam.id">{{typeExam.name}}</mat-option>
+    <mat-label>Categoría</mat-label>
+    <mat-select formControlName="category">
+      <mat-option *ngFor="let category of categories" [value]="category.id">{{category.name}}</mat-option>
     </mat-select>
-    <mat-error *ngIf="form.controls['typesExam'].hasError('required')"
+    <mat-error *ngIf="form.controls['category'].hasError('required')"
     >Campo requerido</mat-error
     >
   </mat-form-field>

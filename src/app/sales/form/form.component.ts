@@ -24,15 +24,15 @@ import { ToastService } from 'toast';
 import {
   CustomCurrencyMaskConfig,
 } from '../../common/currency-mask/mask-config';
-import { ExamItemVM } from '../../products';
+import { ProductItemVM } from '../../products';
 import {
-  StudyExam,
-  StudyVM,
+  SaleProduct,
+  SaleVM,
 } from '../models';
 import {
-  STAGE_STUDY,
+  STAGE_SALE,
   STAGES_ACTIVES,
-  StageStudy,
+  StageSale,
 } from '../models/stage';
 import { StudiesService } from '../studies.service';
 
@@ -50,49 +50,38 @@ export class FormComponent implements OnInit, OnDestroy {
   loading = false;
   submitDisabled = true;
 
-  oldFormValue: StudyVM = {
+  oldFormValue: SaleVM = {
     status: true,
     id: 0,
     date: new Date().toDateString(),
-    patientId: 0,
-    sendEmail: false,
-    stage: StageStudy.Pending,
-    studyExams: [],
+    customerId: 0,
+    stage: StageSale.Pending,
+    saleProducts: [],
     total: 0,
     note: '',
   };
 
-  stagesStudy = STAGE_STUDY;
+  stagesStudy = STAGE_SALE;
 
   optionsCurrency = CustomCurrencyMaskConfig;
 
   showValuesAccept = [
-    StageStudy.InAnalysis,
-    StageStudy.Delivered,
-    StageStudy.Printed,
-    StageStudy.Sent,
-    StageStudy.Delivered,
+    StageSale.Pending,
   ];
-  disabledValuesAccept = [
-    StageStudy.Delivered,
-    StageStudy.Printed,
-    StageStudy.Sent,
-    StageStudy.Delivered,
+  showValuesPrint = [
+    StageSale.Paid,
+    StageSale.Printed,
   ];
-  showDeleteAccept = [
-    StageStudy.Pending,
-    StageStudy.InAnalysis,
-    StageStudy.Paid,
-    StageStudy.SampleTaken,
-  ];
-  showValues = false;
+  hiddenFooter = false;
   showDelete = true;
+  showPrint = false;
 
-  examsBase: Array<ExamItemVM> = [];
-  exams: Array<ExamItemVM> = [];
-  ctrlExam = new FormControl();
+  productsBase: Array<ProductItemVM> = [];
+  products: Array<ProductItemVM> = [];
+  ctrlProduct = new FormControl();
 
   formDisabled = false;
+  subArray$ = new Subscription();
 
   constructor(
     private entityService: StudiesService,
@@ -123,7 +112,7 @@ export class FormComponent implements OnInit, OnDestroy {
         this.loading = loading;
       })
     );
-    this.getExams();
+    this.getProducts();
     this.createForm();
     this.loadData();
   }
@@ -137,28 +126,24 @@ export class FormComponent implements OnInit, OnDestroy {
             console.log(entity);
             if (entity && !this.oldFormValue.id) {
               this.oldFormValue = {
-                patientId: entity.patientId,
-                patientDocument: entity.patient?.idDocument,
-                patientName: entity.patient?.name,
-                patientAge: entity.patient?.age,
-                patientEmail: entity.patient?.email,
-                patientPhone: entity.patient?.phone,
-                patientGender: entity.patient?.gender,
+                customerId: entity.customerId,
+                customerDocument: entity.customer?.idDocument,
+                customerName: entity.customer?.name,
 
                 date: entity.date,
                 stage: entity.stage,
                 id: entity.id,
 
-                sendEmail: entity.sendEmail,
                 total: entity.total,
-                studyExams: entity.studyExams.map(
-                  (studyExam) => {
+                saleProducts: entity.saleProducts.map(
+                  (saleProduct) => {
                     return {
-                      id: studyExam.id,
-                      examId: studyExam.exam?.id,
-                      value: studyExam.value,
-                      name: studyExam.exam?.name,
-                      price: studyExam.exam?.price,
+                      id: saleProduct.id,
+                      productId: saleProduct.product?.id,
+                      amount: saleProduct.amount,
+                      name: saleProduct.product?.name,
+                      price: saleProduct.price,
+                      subtotal: saleProduct.subtotal,
                     };
                   }
                 ),
@@ -171,11 +156,11 @@ export class FormComponent implements OnInit, OnDestroy {
                   emitEvent: false,
                 }
               );
-              this.form.get('patientDocument')?.disable();
-              for (const studyExam of entity.studyExams) {
-                this.addExam(studyExam);
+              this.form.get('customerDocument')?.disable();
+              for (const saleProduct of entity.saleProducts) {
+                this.addExam(saleProduct);
               }
-              this.updateExamValue();
+              this.updateProductValue();
             }
           })
       );
@@ -183,26 +168,21 @@ export class FormComponent implements OnInit, OnDestroy {
   }
 
   clickClosed(): void {
-    this.router.navigate(['/dashboard/studies']);
+    this.router.navigate(['/dashboard/sales']);
   }
 
   private createForm(): void {
     this.form = this.formBuilder.group({
-      patientId: [null, [Validators.required]],
-      patientDocument: [null, [Validators.required]],
-      patientName: [{ value: '', disabled: true }],
-      patientAge: [{ value: '', disabled: true }],
-      patientEmail: [{ value: '', disabled: true }],
-      patientPhone: [{ value: '', disabled: true }],
-      patientGender: [{ value: '', disabled: true }],
+      customerId: [null, [Validators.required]],
+      customerDocument: [null, [Validators.required]],
+      customerName: [{ value: '', disabled: true }],
 
       date: [new Date(), [Validators.required]],
-      stage: [StageStudy.Pending, [Validators.required]],
+      stage: [StageSale.Pending, [Validators.required]],
       id: [0],
 
-      sendEmail: [false, [Validators.required]],
       total: [{ value: 0, disabled: true }, [Validators.required]],
-      studyExams: this.formBuilder.array([]),
+      saleProducts: this.formBuilder.array([]),
     });
 
     this.sub$.add(
@@ -210,68 +190,88 @@ export class FormComponent implements OnInit, OnDestroy {
         this.submitDisabled =
           isEqual(this.oldFormValue, this.form.getRawValue()) ||
           this.form.invalid;
-          
+
       })
     );
 
     this.sub$.add(
       this.form.get('stage')?.valueChanges.subscribe(
         () => {
-          this.updateExamValue();
+          this.updateProductValue();
         }
       )
     );
   }
 
-  private updateExamValue(): void {
+  private updateProductValue(): void {
     const stage = this.form.get('stage')?.value;
-    this.showValues = this.showValuesAccept.includes(stage);
-    const disabled = this.disabledValuesAccept.includes(stage);
-    const formArray =  this.studyExamsArray;
-    this.showDelete = this.showDeleteAccept.includes(stage);
+    this.hiddenFooter = !this.showValuesAccept.includes(stage) && !this.formDisabled;
+    this.showDelete = this.showValuesAccept.includes(stage);
+    this.showPrint = this.showValuesPrint.includes(stage) && !this.formDisabled;
+    const disabled = !this.showValuesAccept.includes(stage);
+    const formArray = this.saleProductsArray;
     for (let i = 0; i < formArray.length; i++) {
       if (disabled) {
-        formArray.at(i).get('value')?.disable();
+        formArray.at(i).get('amount')?.disable();
       } else {
-        formArray.at(i).get('value')?.enable();
+        formArray.at(i).get('amount')?.enable();
       }
     }
-    if (!STAGES_ACTIVES.includes(stage)) {
-      this.form.disable({emitEvent: false});
+    if (!STAGES_ACTIVES.includes(stage) && this.formDisabled) {
+      this.form.disable({ emitEvent: false });
       this.formDisabled = true;
-      this.form.get('stage')?.enable({emitEvent: false});
     }
   }
 
-  get studyExamsArray() {
-    return this.form.get('studyExams') as FormArray;
+  get saleProductsArray() {
+    return this.form.get('saleProducts') as FormArray;
   }
 
-  addExam(studyExam?: StudyExam) {
-    if (this.ctrlExam.valid || studyExam) {
-      const exam: ExamItemVM = this.ctrlExam.value;
-      if (exam || studyExam) {
-        this.studyExamsArray.push(this.formBuilder.group({
-          id: [null || studyExam?.id],
-          examId: [exam?.id || studyExam?.exam?.id, Validators.required],
-          name: [{ value: exam?.name || studyExam?.exam?.name, disabled: true }, Validators.required],
-          value: ['' || studyExam?.value],
-          price: [{ value: exam?.price || studyExam?.exam?.price, disabled: true }],
+  addExam(saleProduct?: SaleProduct) {
+    if (this.ctrlProduct.valid || saleProduct) {
+      const product: ProductItemVM = this.ctrlProduct.value;
+      if (product || saleProduct) {
+        this.saleProductsArray.push(this.formBuilder.group({
+          id: [null || saleProduct?.id],
+          productId: [product?.id || saleProduct?.product?.id, Validators.required],
+          name: [{ value: product?.name || saleProduct?.product?.name, disabled: true }, Validators.required],
+          amount: [1 || saleProduct?.amount, [Validators.required, Validators.min(0.01)]],
+          price: [{ value: product?.price || saleProduct?.price, disabled: true }],
+          subtotal: [{ value: product?.price * 1 || saleProduct?.subtotal, disabled: true }],
         }));
-        this.ctrlExam.reset();
-        this.updateExams();
+
+        this.subArray$.unsubscribe();
+        this.saleProductsArray.controls.forEach(
+          (control) => {
+            this.subArray$.add(
+              () => {
+                const form = (control as FormGroup);
+                form.controls['amount']?.valueChanges.subscribe(
+                  (amount) => {
+                    form.patchValue({
+                      subtotal: form.controls['price'].value * amount,
+                    }, { emitEvent: false });
+                    this.updateTotal();
+                  }
+                )
+              }
+            );
+          }
+        );
+        this.ctrlProduct.reset();
+        this.updateProducts();
       }
     }
   }
 
   removeExam(index: number) {
-    this.studyExamsArray.removeAt(index);
-    this.updateExams();
+    this.saleProductsArray.removeAt(index);
+    this.updateProducts();
   }
 
-  private updateExams(): void {
-    const examIds = this.studyExamsArray.value.map((x: any) => x.examId);
-    this.exams = this.examsBase.filter((x) => !examIds.includes(x.id));
+  private updateProducts(): void {
+    const productIds = this.saleProductsArray.value.map((x: any) => x.productId);
+    this.products = this.productsBase.filter((x) => !productIds.includes(x.id));
     this.updateTotal();
   }
 
@@ -294,7 +294,7 @@ export class FormComponent implements OnInit, OnDestroy {
             () => {
               this.form.reset();
               this.clickClosed();
-              this.toastService.success('¡Estudio creado exitosamente!');
+              this.toastService.success('¡Venta creada exitosamente!');
             }
           )
       );
@@ -313,7 +313,7 @@ export class FormComponent implements OnInit, OnDestroy {
             () => {
               this.form.reset();
               this.clickClosed();
-              this.toastService.success('¡Estudio actualizado exitosamente!');
+              this.toastService.success('¡Venta actualizada exitosamente!');
             }
           )
       );
@@ -321,20 +321,15 @@ export class FormComponent implements OnInit, OnDestroy {
   }
 
   findPatient(): void {
-    const patientDocument = this.form.get('patientDocument')?.value;
-    if (patientDocument && !this.id) {
+    const customerDocument = this.form.get('customerDocument')?.value;
+    if (customerDocument && !this.id) {
       this.sub$.add(
-        this.entityService.findPatientByDocument$(patientDocument).subscribe(
-          (patient) => {
-            console.log(patient);
-            if (patient?.id) {
+        this.entityService.findPatientByDocument$(customerDocument).subscribe(
+          (customer) => {
+            if (customer?.id) {
               this.form.patchValue({
-                patientId: patient.id,
-                patientName: patient.name,
-                patientAge: patient.age,
-                patientEmail: patient.email,
-                patientPhone: patient.phone,
-                patientGender: patient.gender,
+                customerId: customer.id,
+                customerName: customer.name,
               });
             }
           }
@@ -343,25 +338,26 @@ export class FormComponent implements OnInit, OnDestroy {
     }
   }
 
-  private getExams(): void {
+  private getProducts(): void {
     this.sub$.add(
       this.entityService.getExams$().subscribe(
-        (exams) => {
-          this.exams = exams;
-          this.examsBase = exams;
-          this.updateExams();
+        (products) => {
+          this.products = products;
+          this.productsBase = products;
+          this.updateProducts();
         }
       )
     );
   }
 
   private updateTotal(): void {
-    const examIds = this.studyExamsArray.value.map((x: any) => x.examId);
-    const total = this.examsBase.filter((x) => examIds.includes(x.id)).reduce(
-      (accumulator, currentValue) => accumulator + currentValue.price, 0,
-    );
+    const total: number = this.saleProductsArray
+      .getRawValue()
+      .reduce(
+        (accumulator: number, currentValue: SaleProduct) => accumulator + +currentValue.subtotal, 0,
+      );
     this.form.patchValue({
-      total,
+      total: total.toString(),
     });
   }
 

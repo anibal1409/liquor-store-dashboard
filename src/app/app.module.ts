@@ -17,6 +17,12 @@ import {
 import { ErrorHandlerModule } from 'error-handler';
 import { CurrencyMaskModule } from 'ng2-currency-mask';
 import {
+  IConfig,
+  NgxMaskDirective,
+  NgxMaskPipe,
+  provideEnvironmentNgxMask,
+} from 'ngx-mask';
+import {
   ToastModule,
   ToastService,
 } from 'toast';
@@ -42,6 +48,10 @@ function apiConfigFactory(): Configuration {
     withCredentials: true,
   });
 }
+
+const maskConfig: Partial<IConfig> = {
+  validation: false,
+};
 
 @NgModule({
   declarations: [
@@ -72,12 +82,15 @@ function apiConfigFactory(): Configuration {
     }),
     NgbModule,
     CurrencyMaskModule,
+    NgxMaskDirective,
+    NgxMaskPipe,
   ],
   providers: [
     AuthGuard,
     AuthLoginGuard,
     { provide: LOCALE_ID, useValue: 'es-ES' },
     { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
+    provideEnvironmentNgxMask(maskConfig),
   ],
   bootstrap: [AppComponent]
 })

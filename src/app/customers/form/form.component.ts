@@ -17,7 +17,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { isEqual } from 'lodash';
 import { Subscription } from 'rxjs';
 
-import { PatientVM } from '../models/patient-vm';
+import { CustomerVM } from '../models/customer-vm';
 import { PatientsService } from '../patients.service';
 
 @Component({
@@ -37,12 +37,10 @@ export class FormComponent implements OnInit, OnDestroy {
   loading = false;
   submitDisabled = true;
 
-  oldFormValue: PatientVM = {
-    email: '',
+  oldFormValue: CustomerVM = {
     idDocument: '',
     status: true,
     id: 0,
-    birthdate: '',
     firstName: '',
     lastName: '',
     gender: '',
@@ -59,7 +57,7 @@ export class FormComponent implements OnInit, OnDestroy {
   constructor(
     private usersService: PatientsService,
     private formBuilder: FormBuilder,
-    @Inject(MAT_DIALOG_DATA) public data: PatientVM,
+    @Inject(MAT_DIALOG_DATA) public data: CustomerVM,
   ) { }
 
   ngOnDestroy(): void {
@@ -106,14 +104,12 @@ export class FormComponent implements OnInit, OnDestroy {
   private createForm(): void {
     this.form = this.formBuilder.group({
       idDocument: [null, [Validators.required]],
-      birthdate: [null, [Validators.required]],
       id: [0],
       status: [true, [Validators.required]],
-      email: [null, [Validators.required, Validators.email]],
       firstName: [null, [Validators.required]],
       lastName: [null, [Validators.required]],
       gender: [null, [Validators.required]],
-      phone: [null],
+      phone: [null, [Validators.required]],
     });
 
     this.sub$.add(

@@ -1,4 +1,4 @@
-export enum RowActionPatient {
+export enum RowActionCustomer {
   update = 'update',
   delete = 'delete',
 }

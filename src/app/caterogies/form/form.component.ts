@@ -75,12 +75,12 @@ export class FormComponent implements OnInit, OnDestroy {
       this.sub$.add(
         this.typesExamService
           .find$({ id: this.id })
-          .subscribe((school) => {
-            if (school) {
-              this.oldFormValue = school;
+          .subscribe((entity) => {
+            if (entity) {
+              this.oldFormValue = entity;
               this.form.patchValue(
                 {
-                  ...school,
+                  ...entity,
                 },
                 {
                   emitEvent: false,

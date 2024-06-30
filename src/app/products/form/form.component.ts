@@ -17,9 +17,12 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { isEqual } from 'lodash';
 import { Subscription } from 'rxjs';
 
-import { TypeExamItemVM } from '../../caterogies';
+import { CategoryItemVM } from '../../caterogies';
+import {
+  CustomCurrencyMaskConfig,
+} from '../../common/currency-mask/mask-config';
 import { ExamsService } from '../exams.service';
-import { ExamVM } from '../models';
+import { ProductVM } from '../models';
 
 @Component({
   selector: 'app-form',
@@ -38,30 +41,28 @@ export class FormComponent implements OnInit, OnDestroy {
   loading = false;
   submitDisabled = true;
 
-  oldFormValue: ExamVM = {
+  oldFormValue: ProductVM = {
     name: '',
     description: '',
     id: 0,
     status: true,
     price: 0,
-    typesExam: {id: 0},
-    unitedCheck: false,
-    valuesCheck: false,
-    united: undefined,
-    values: undefined,
+    category: {id: 0},
+    stock: 0,
   };
+  optionsCurrency = CustomCurrencyMaskConfig;
   
   status = [
     { name: 'Activo', value: true },
     { name: 'Inactivo', value: false, },
   ];
 
-  typesExam: Array<TypeExamItemVM> = [];
+  categories: Array<CategoryItemVM> = [];
 
   constructor(
     private entityService: ExamsService,
     private formBuilder: FormBuilder,
-    @Inject(MAT_DIALOG_DATA) public data: ExamVM,
+    @Inject(MAT_DIALOG_DATA) public data: ProductVM,
   ) { }
 
   ngOnDestroy(): void {
@@ -83,7 +84,7 @@ export class FormComponent implements OnInit, OnDestroy {
     this.sub$.add(
       this.entityService.getTypesExam$().subscribe(
         (typesExam) => {
-          this.typesExam = typesExam;
+          this.categories = typesExam;
         }
       )
     );
@@ -96,12 +97,10 @@ export class FormComponent implements OnInit, OnDestroy {
         this.entityService
           .find$({ id: this.id })
           .subscribe((entity) => {
-            console.log(entity);
-            
             if (entity) {
               this.oldFormValue = {
                 ...entity,
-                typesExam: entity.typesExam?.id as any,
+                category: entity.category?.id as any,
               };
               this.form.patchValue(
                 {
@@ -128,11 +127,8 @@ export class FormComponent implements OnInit, OnDestroy {
       id: [0],
       status: [true, [Validators.required]],
       price: [null, [Validators.required, Validators.min(1)]],
-      typesExam: [null, [Validators.required]],
-      unitedCheck: [false, [Validators.required]],
-      valuesCheck: [false, [Validators.required]],
-      united: [null],
-      values: [null],
+      category: [null, [Validators.required]],
+      stock: [null, [Validators.required, Validators.min(1)]],
     });
 
     this.sub$.add(
@@ -158,7 +154,7 @@ export class FormComponent implements OnInit, OnDestroy {
         this.entityService
           .create({
             ...this.form.value,
-            typesExam: { id: this.form.value.typesExam},
+            category: { id: this.form.value.category},
           })
           .subscribe(
             (data) => {
@@ -177,7 +173,7 @@ export class FormComponent implements OnInit, OnDestroy {
           .update({
             ...this.form.value,
             id: this.id,
-            typesExam: { id: this.form.value.typesExam},
+            category: { id: this.form.value.category},
           })
           .subscribe(
             () => {

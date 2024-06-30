@@ -10,18 +10,18 @@ import {
   BaseQuery,
   UseCase,
 } from '../../../common/memory-repository';
-import { patientToPatientVM } from '../../mappers/patient-2-patient-vm';
-import { PatientItemVM } from '../../models/patient-item-vm';
+import { customerToCustomerVM } from '../../mappers/customer-2-customer-vm';
+import { CustomerItemVM } from '../../models/customer-item-vm';
 
 @Injectable()
 export class FindPatientService
-  implements UseCase<PatientItemVM | null, BaseQuery>
+  implements UseCase<CustomerItemVM | null, BaseQuery>
 {
   constructor(private entityServices: CustomersService) { }
 
-  exec(data: BaseQuery): Observable<PatientItemVM> {
+  exec(data: BaseQuery): Observable<CustomerItemVM> {
     return this.entityServices
       .customersControllerFindOne(data?.id?.toString() || '0')
-      .pipe(map(patientToPatientVM));
+      .pipe(map(customerToCustomerVM));
   }
 }

@@ -1,31 +1,33 @@
 import { Injectable } from '@angular/core';
 
+import { ProductsService } from 'dashboard-sdk';
 import {
+  map,
   Observable,
-  of,
+  tap,
 } from 'rxjs';
 
 import { UseCase } from '../../../common';
+import { examToExamItemVM } from '../../mappers';
 import { ExamMemoryService } from '../../memory';
 import {
-  ExamItemVM,
-  ExamVM,
+  ProductItemVM,
+  ProductVM,
 } from '../../models';
 
 @Injectable()
-export class CreateExamService implements UseCase<ExamItemVM | null, ExamVM> {
+export class CreateExamService implements UseCase<ProductItemVM | null, ProductVM> {
 
   constructor(
-    // private httpService: ExamsService,
+    private httpService: ProductsService,
     private memoryService: ExamMemoryService,
   ) { }
 
-  exec(data: ExamVM): Observable<ExamItemVM> {
-    return of();
-    // return this.httpService.examsControllerCreate(data)
-    //   .pipe(
-    //     map(examToExamItemVM),
-    //     tap((item) => this.memoryService.create(item)),
-    //   );
+  exec(data: ProductVM): Observable<ProductItemVM> {
+    return this.httpService.productsControllerCreate(data)
+      .pipe(
+        map(examToExamItemVM),
+        tap((item) => this.memoryService.create(item)),
+      );
   }
 }

@@ -15,8 +15,8 @@ import {
   TableService,
 } from '../common';
 import { FormComponent } from './form';
-import { RowActionPatient } from './models';
-import { PatientItemVM } from './models/patient-item-vm';
+import { RowActionCustomer } from './models';
+import { CustomerItemVM } from './models/customer-item-vm';
 import { PatientsService } from './patients.service';
 
 @Component({
@@ -27,6 +27,11 @@ import { PatientsService } from './patients.service';
 export class PatientsComponent implements OnInit, OnDestroy {
   data: TableDataVM = {
     headers: [
+      {
+        columnDef: 'idDocument',
+        header: 'Documento',
+        cell: (element: { [key: string]: string }) => `${element['idDocument']}`,
+      },
       {
         columnDef: 'name',
         header: 'Nombre',
@@ -79,10 +84,10 @@ export class PatientsComponent implements OnInit, OnDestroy {
   
   clickAction(option: OptionAction) {
     switch (option.option.value) {
-      case RowActionPatient.update:
+      case RowActionCustomer.update:
         this.showModal(+option.data['id']);
         break;
-      case RowActionPatient.delete:
+      case RowActionCustomer.delete:
         this.showConfirm(option.data as any);
         break;
     }
@@ -101,12 +106,12 @@ export class PatientsComponent implements OnInit, OnDestroy {
     });
   }
 
-  showConfirm(item: PatientItemVM): void {
+  showConfirm(item: CustomerItemVM): void {
     const dialogRef = this.matDialog.open(ConfirmModalComponent, {
       data: {
         message: {
-          title: 'Eliminar paciente',
-          body: `¿Está seguro que desea eliminar el paciente <strong>${item.name}</strong>?`,
+          title: 'Eliminar cliente',
+          body: `¿Está seguro que desea eliminar el cliente <strong>${item.name}</strong>?`,
         },
       },
       hasBackdrop: true,

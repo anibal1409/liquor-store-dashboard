@@ -1,3 +1,3 @@
-export * from './exam-item-vm ';
-export * from './exam-vm';
+export * from './product-item-vm ';
+export * from './product-vm';
 export * from './row-action';

@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
-import { TypeExamItemVM } from '../caterogies';
+import { CategoryItemVM } from '../caterogies';
 import { GetTypesExamService } from '../caterogies/use-cases/get-types-exam';
 import { ListComponentService } from '../common';
 import { ExamMemoryService } from './memory';
-import { ExamItemVM } from './models';
+import { ProductItemVM } from './models';
 import {
   CreateExamService,
   DeleteExamService,
@@ -16,7 +16,7 @@ import {
 } from './use-cases';
 
 @Injectable()
-export class ExamsService extends ListComponentService<ExamItemVM> {
+export class ExamsService extends ListComponentService<ProductItemVM> {
   constructor(
     public getEntityService: GetExamsService,
     public entityMemoryService: ExamMemoryService,
@@ -36,7 +36,7 @@ export class ExamsService extends ListComponentService<ExamItemVM> {
     );
   }
 
-  getTypesExam$(): Observable<Array<TypeExamItemVM>> {
+  getTypesExam$(): Observable<Array<CategoryItemVM>> {
     return this.getTypesExamService.exec();
   }
 }

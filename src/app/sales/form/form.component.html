@@ -1,84 +1,42 @@
 <div class="d-flex">
   <button mat-button (click)="back()">
     <mat-icon>keyboard_arrow_left</mat-icon>
-  </button><h1>{{ id ? 'Modificar':  'Crear' }} estudio </h1>
+  </button><h1>{{ id ? 'Modificar':  'Crear' }} Venta </h1>
 </div>
 <form [formGroup]="form!">
-  <h2>Datos del paciente</h2>
+  <h2>Datos del cliente</h2>
   <mat-divider class="my-3"></mat-divider>
   <div class="row">
     <div class="col-md-4 col-12">
       <mat-form-field>
-        <mat-label>Cédula</mat-label>
+        <mat-label>Documento de identidad</mat-label>
         <input
           matInput
           type="text"
-          formControlName="patientDocument"
+          formControlName="customerDocument"
           required
           (keyup.enter)="findPatient()"
         />
         <mat-icon matSuffix (click)="findPatient()">search</mat-icon>
-        <mat-error *ngIf="form.controls['patientDocument'].hasError('required')"
+        <mat-error *ngIf="form.controls['customerDocument'].hasError('required')"
           >Campo requerido</mat-error
         >
       </mat-form-field>
     </div>
-    <div class="col-md-6 col-12">
+    <div class="col-md-8 col-12">
       <mat-form-field>
         <mat-label>Nombre</mat-label>
         <input
           matInput
           type="text"
-          formControlName="patientName"
-        />
-      </mat-form-field>
-    </div>
-    <div class="col-md-2 col-12">
-      <mat-form-field>
-        <mat-label>Edad</mat-label>
-        <input
-          matInput
-          type="text"
-          formControlName="patientAge"
-        />
-      </mat-form-field>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-4 col-12">
-      <mat-form-field>
-        <mat-label>Correo electrónico</mat-label>
-        <input
-          matInput
-          type="text"
-          formControlName="patientEmail"
-        />
-      </mat-form-field>
-    </div>
-    <div class="col-md-4 col-12">
-      <mat-form-field>
-        <mat-label>Teléfono</mat-label>
-        <input
-          matInput
-          type="text"
-          formControlName="patientPhone"
-        />
-      </mat-form-field>
-    </div>
-    <div class="col-md-4 col-12">
-      <mat-form-field>
-        <mat-label>Género</mat-label>
-        <input
-          matInput
-          type="text"
-          formControlName="patientGender"
+          formControlName="customerName"
         />
       </mat-form-field>
     </div>
   </div>
 
 
-  <h2 class="mt-3">Datos del estudio</h2>
+  <h2 class="mt-3">Detalles de la venta</h2>
 
   <mat-divider class="my-3"></mat-divider>
 
@@ -86,7 +44,7 @@
   <div class="row">
     <div class="col-md-4 col-12">
       <mat-form-field>
-        <mat-label>Fecha de nacimiento</mat-label>
+        <mat-label>Fecha</mat-label>
         <input matInput [matDatepicker]="picker" formControlName="date" readonly="true">
         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
@@ -111,38 +69,33 @@
           </mat-option
           >
         </mat-select>
-      <mat-error *ngIf="form.controls['stage'].hasError('required')"
-        >Campo requerido</mat-error
-      >
-    </mat-form-field>
-    </div>
-    <div class="col-md-4 col-12">
-      <mat-checkbox formControlName="sendEmail">
-        Enviar por correo electrónico
-      </mat-checkbox>
+        <mat-error *ngIf="form.controls['stage'].hasError('required')"
+          >Campo requerido</mat-error
+        >
+      </mat-form-field>
     </div>
   </div>
 
 
 
-  <h2 class="mt-3 text-center">Examenes</h2>
+  <h2 class="mt-3 text-center">Productos</h2>
 
   <mat-divider class="my-3"></mat-divider>
 
   <div class="row" *ngIf="!formDisabled">
     <div class="col-md-5 col-12">
       <mat-form-field>
-        <mat-label>Examen</mat-label>
+        <mat-label>Producto</mat-label>
         <mat-select
           matSelect
-          placeholder="Examen"
-          [formControl]="ctrlExam"
+          placeholder="Cerveza"
+          [formControl]="ctrlProduct"
         >
           <mat-option
-            *ngFor="let exam of exams"
-            [value]="exam"
+            *ngFor="let product of products"
+            [value]="product"
           >
-            {{ exam.name }}
+            {{ product.name }}
           </mat-option
           >
         </mat-select>
@@ -155,45 +108,29 @@
       <button type="button" mat-button (click)="addExam()">Agregar</button>
     </div>
     <div class="col-md-5 col-12">
-      <!-- <mat-form-field>
-        <mat-label>Examen</mat-label>
-        <mat-select
-          matSelect
-          placeholder="Examen"
-        >
-          <mat-option
-            *ngFor="let exam of exams"
-            [value]="exam"
-          >
-            {{ exam.name }}
-          </mat-option
-          >
-        </mat-select>
-        <mat-error *ngIf="form.controls['stage'].hasError('required')"
-          >Campo requerido</mat-error
-        >
-      </mat-form-field> -->
     </div>
     <div class="col-md-1 col-12 d-flex justify-content-end">
-      <!-- <button type="button" matf-button (click)="addExam()">Agregar</button> -->
     </div>
   </div>
 
   <mat-divider class="my-2"></mat-divider>
 
-  <div *ngIf="studyExamsArray.length" formArrayName="studyExams" class="content-exams">
+  <div *ngIf="saleProductsArray.length" formArrayName="saleProducts" class="content-exams">
     <div class="row py-2">
       <div class="col-md-1 col-12">
         N
       </div>
-      <div class="col-md-4 col-12" [ngClass]="{'col-md-6': !showValues}">
-        Examen
+      <div class="col-md-3 col-12" >
+        Producto
       </div>
-      <div class="col-md-4 col-12" [ngClass]="{'hidden': !showValues}">
-        Valor
-      </div>
-      <div class="col-md-2 col-12" [ngClass]="{'col-md-4': !showValues}">
+      <div class="col-md-2 col-12" >
         Precio
+      </div>
+      <div class="col-md-2 col-12" >
+        Cantidad
+      </div>
+      <div class="col-md-3 col-12">
+        Subtotal
       </div>
       <div class="col-md-1 col-12">
         {{
@@ -201,16 +138,16 @@
         }}
       </div>
     </div>
-    <div *ngFor="let exam of studyExamsArray.controls; let i=index" [formGroupName]="i">
+    <div *ngFor="let product of saleProductsArray.controls; let i=index" [formGroupName]="i">
       <div class="row">
         <div class="col-md-1 col-12 d-flex align-items-center">
           {{
             i + 1
           }}
         </div>
-        <div class="col-md-4 col-12" [ngClass]="{'col-md-6': !showValues}">
+        <div class="col-md-3 col-12" >
           <input type="hidden" formControlName="id">
-          <input type="hidden" formControlName="examId">
+          <input type="hidden" formControlName="productId">
           <mat-form-field>
             <input
               matInput
@@ -219,21 +156,32 @@
             />
           </mat-form-field>
         </div>
-        <div class="col-md-4 col-12" [ngClass]="{'hidden': !showValues}">
-          <mat-form-field>
-            <input
-              matInput
-              type="text"
-              formControlName="value"
-            />
-          </mat-form-field>
-        </div>
-        <div class="col-md-2 col-12" [ngClass]="{'col-md-4': !showValues}">
+        <div class="col-md-2 col-12" >
           <mat-form-field>
             <input
               matInput
               type="text"
               formControlName="price"
+              currencyMask
+              [options]="optionsCurrency"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-2 col-12" >
+          <mat-form-field>
+            <input
+              matInput
+              type="text"
+              formControlName="amount"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-3 col-12" >
+          <mat-form-field>
+            <input
+              matInput
+              type="text"
+              formControlName="subtotal"
               currencyMask
               [options]="optionsCurrency"
             />
@@ -275,7 +223,8 @@
 </form>
 
 <div class="modal-footer" >
-  <!-- <button
+  <button
+    *ngIf="showPrint"
     mat-button
     type="button"
     (click)="clickSave()"
@@ -284,23 +233,28 @@
     title="Imprimir"
   >
     <mat-icon>print</mat-icon>
-  </button> -->
-  <button
-    mat-button
-    type="button"
-    (click)="clickSave()"
-    color="primary"
-    [disabled]="submitDisabled || loading"
-  >
-    Guardar
   </button>
-  <button
-    mat-button
-    mat-dialog-close
-    cdkFocusInitial
-    type="button"
-    (click)="clickClosed()"
+
+  <ng-container *ngIf="hiddenFooter"
   >
-    Cancelar
-  </button>
+    <button
+      mat-button
+      type="button"
+      (click)="clickSave()"
+      color="primary"
+      [disabled]="submitDisabled || loading"
+    >
+      Guardar
+    </button>
+    <button
+      mat-button
+      mat-dialog-close
+      cdkFocusInitial
+      type="button"
+      (click)="clickClosed()"
+    >
+      Cancelar
+    </button>
+  </ng-container>
+  
 </div>

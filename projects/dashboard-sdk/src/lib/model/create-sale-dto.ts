@@ -16,7 +16,7 @@ import { CreateSaleProductDto } from './create-sale-product-dto';
 export interface CreateSaleDto { 
     date: string;
     note?: string;
-    sendEmail: boolean;
+    stage: string;
     total: number;
     customer: IdCreateEntity;
     saleProducts: Array<CreateSaleProductDto>;

@@ -9,34 +9,34 @@ import {
 
 import { UseCase } from '../../../common/memory-repository';
 import {
-  patientToPatientItemVM,
-} from '../../mappers/patient-2-patient-item-vm';
+  customerToCustomerItemVM,
+} from '../../mappers/customer-2-customer-item-vm';
 import { PatientMemoryService } from '../../memory';
-import { PatientItemVM } from '../../models/patient-item-vm';
-import { PatientVM } from '../../models/patient-vm';
+import { CustomerItemVM } from '../../models/customer-item-vm';
+import { CustomerVM } from '../../models/customer-vm';
 
 @Injectable()
 export class CreatePatientService
-  implements UseCase<PatientItemVM, PatientVM>
+  implements UseCase<CustomerItemVM, CustomerVM>
 {
   constructor(
     private entityServices: CustomersService,
     private memoryService: PatientMemoryService,
   ) { }
 
-  exec(entitySave: PatientVM): Observable<PatientItemVM> {
+  exec(entitySave: CustomerVM): Observable<CustomerItemVM> {
     return this.entityServices
       .customersControllerCreate({
-        email: entitySave.email,
-        name: `${entitySave.firstName} ${entitySave.lastName}`,
+        firstName: entitySave.firstName,
+        lastName: entitySave.lastName,
         idDocument: entitySave.idDocument,
         status: entitySave.status,
         phone: entitySave.phone,
-        address: entitySave.firstName,
+        gender: entitySave.gender,
       }
       )
       .pipe(
-        map(patientToPatientItemVM),
+        map(customerToCustomerItemVM),
         tap((entity) => {
           this.memoryService.create(entity);
         })

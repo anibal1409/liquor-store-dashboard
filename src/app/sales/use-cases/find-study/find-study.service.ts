@@ -1,28 +1,29 @@
 import { Injectable } from '@angular/core';
 
+import { SaleService } from 'dashboard-sdk';
 import {
+  map,
   Observable,
-  of,
 } from 'rxjs';
 
 import {
   BaseQuery,
   UseCase,
 } from '../../../common/memory-repository';
-import { StudyItemVM } from '../../models';
+import { study2StudyVM } from '../../mappers';
+import { SaleItemVM } from '../../models';
 
 @Injectable()
 export class FindStudyService
-  implements UseCase<StudyItemVM | null, BaseQuery>
+  implements UseCase<SaleItemVM | null, BaseQuery>
 {
   constructor(
-    // private entityServices: StudiesService
+    private entityServices: SaleService
   ) { }
 
-  exec(data: BaseQuery): Observable<StudyItemVM> {
-    return of();
-    // return this.entityServices
-    // .studiesControllerFindOne(data?.id?.toString() || '0').
-    // .pipe(map(study2StudyVM));
+  exec(data: BaseQuery): Observable<SaleItemVM> {
+    return this.entityServices
+    .salesControllerFindOne(data?.id?.toString() || '0')
+    .pipe(map(study2StudyVM));
   }
 }

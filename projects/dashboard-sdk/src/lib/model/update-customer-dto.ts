@@ -12,11 +12,11 @@
 
 
 export interface UpdateCustomerDto { 
-    email?: string;
     idDocument?: string;
-    name?: string;
-    address?: string;
+    firstName?: string;
+    lastName?: string;
     status?: boolean;
     phone?: string;
+    gender?: string;
 }
 

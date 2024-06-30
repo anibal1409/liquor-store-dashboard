@@ -1,27 +1,28 @@
 import { Injectable } from '@angular/core';
 
+import { ProductsService } from 'dashboard-sdk';
 import {
+  map,
   Observable,
-  of,
 } from 'rxjs';
 
 import {
   BaseQuery,
   UseCase,
 } from '../../../common';
-import { ExamItemVM } from '../../models';
+import { productToProductVM } from '../../mappers';
+import { ProductItemVM } from '../../models';
 
 @Injectable()
-export class FindExamService implements UseCase<ExamItemVM | null, BaseQuery>
+export class FindExamService implements UseCase<ProductItemVM | null, BaseQuery>
 {
   constructor(
-    // private httpService: ExamsService
+    private httpService: ProductsService
   ) { }
 
-  exec(data: BaseQuery): Observable<ExamItemVM | null> {
-    return of();
-    // return this.httpService
-    //   .examsControllerFindOne(data?.id?.toString() || '0')
-    //   .pipe(map(examToExamVM));
+  exec(data: BaseQuery): Observable<ProductItemVM | null> {
+    return this.httpService
+      .productsControllerFindOne(data?.id?.toString() || '0')
+      .pipe(map(productToProductVM));
   }
 }

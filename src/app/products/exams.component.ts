@@ -1,3 +1,4 @@
+import { CurrencyPipe } from '@angular/common';
 import {
   Component,
   OnDestroy,
@@ -19,8 +20,8 @@ import {
 import { ExamsService } from './exams.service';
 import { FormComponent } from './form';
 import {
-  ExamItemVM,
-  ExamVM,
+  ProductItemVM,
+  ProductVM,
   RowActionExam,
 } from './models';
 
@@ -30,12 +31,22 @@ import {
   styleUrls: ['./exams.component.scss']
 })
 export class ExamsComponent implements OnInit, OnDestroy {
-  dataTable: TableDataVM<ExamItemVM> = {
+  dataTable: TableDataVM<ProductItemVM> = {
     headers: [
       {
         columnDef: 'name',
         header: 'Nombre',
         cell: (element: { [key: string]: string }) => `${element['name']}`,
+      },
+      {
+        columnDef: 'price',
+        header: 'Precio',
+        cell: (element: { [key: string]: string }) => `${this.currency.transform(element['price'])}`,
+      },
+      {
+        columnDef: 'stock',
+        header: 'Existencias',
+        cell: (element: { [key: string]: string }) => `${element['stock']}`,
       },
     ],
     body: [],
@@ -50,6 +61,7 @@ export class ExamsComponent implements OnInit, OnDestroy {
     private tableService: TableService,
     private stateService: StateService,
     public matDialog: MatDialog,
+    private currency: CurrencyPipe,
   ) {}
 
   ngOnInit(): void {
@@ -101,12 +113,12 @@ export class ExamsComponent implements OnInit, OnDestroy {
     });
   }
 
-  showConfirm(item: ExamVM): void {
+  showConfirm(item: ProductVM): void {
     const dialogRef = this.matDialog.open(ConfirmModalComponent, {
       data: {
         message: {
-          title: 'Eliminar examen',
-          body: `¿Está seguro que desea eliminar el examen <strong>${item.name}</strong>?`,
+          title: 'Eliminar producto',
+          body: `¿Está seguro que desea eliminar el producto <strong>${item.name}</strong>?`,
         },
       },
       hasBackdrop: true,

@@ -1,47 +1,50 @@
 import { Injectable } from '@angular/core';
 
+import { SaleService } from 'dashboard-sdk';
 import {
+  map,
   Observable,
-  of,
+  tap,
 } from 'rxjs';
 
 import { UseCase } from '../../../common/memory-repository';
+import { study2StudyItemVM } from '../../mappers';
 import { StudyMemoryService } from '../../memory';
 import {
-  StudyItemVM,
-  StudyVM,
+  SaleItemVM,
+  SaleVM,
 } from '../../models';
 
 @Injectable()
 export class CreateStudyService
-  implements UseCase<StudyItemVM, StudyVM>
+  implements UseCase<SaleItemVM, SaleVM>
 {
   constructor(
-    // private entityServices: StudiesService,
+    private entityServices: SaleService,
     private memoryService: StudyMemoryService,
   ) { }
 
-  exec(entitySave: StudyVM): Observable<StudyItemVM> {
-    return of();
-    // return this.entityServices
-    //   .studiesControllerCreate({
-    //     date: entitySave.date,
-    //     note: entitySave.note,
-    //     total: entitySave.total,
-    //     patient: { id: entitySave.patientId },
-    //     sendEmail: entitySave.sendEmail,
-    //     stage: entitySave.stage,
-    //     studyExams: entitySave.studyExams.map((x) => ({
-    //       exam: { id: x.examId },
-    //       value: x.value,
-    //     })) as any,
-    //   }
-    //   )
-    //   .pipe(
-    //     map(study2StudyItemVM),
-    //     tap((entity) => {
-    //       this.memoryService.create(entity);
-    //     })
-    //   );
+  exec(entitySave: SaleVM): Observable<SaleItemVM> {
+    return this.entityServices
+      .salesControllerCreate({
+        date: entitySave.date,
+        note: entitySave.note,
+        total: +entitySave.total,
+        customer: { id: entitySave.customerId },
+        stage: entitySave.stage,
+        saleProducts: entitySave.saleProducts.map((x) => ({
+          product: { id: x.productId },
+          price: +x.price,
+          amount: +x.amount,
+          subtotal: +x.subtotal
+        })) as any,
+      }
+      )
+      .pipe(
+        map(study2StudyItemVM),
+        tap((entity) => {
+          this.memoryService.create(entity);
+        })
+      );
   }
 }

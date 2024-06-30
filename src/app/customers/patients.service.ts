@@ -5,7 +5,7 @@ import {
   ListComponentService,
 } from '../common/memory-repository';
 import { PatientMemoryService } from './memory';
-import { PatientItemVM } from './models/patient-item-vm';
+import { CustomerItemVM } from './models/customer-item-vm';
 import {
   CreatePatientService,
   DeletePatientService,
@@ -15,7 +15,7 @@ import {
 } from './use-cases';
 
 @Injectable()
-export class PatientsService extends ListComponentService<PatientItemVM, BaseQuery> {
+export class PatientsService extends ListComponentService<CustomerItemVM, BaseQuery> {
   constructor(
     public getEntityService: GetPatientsService,
     public memoryEntityService: PatientMemoryService,

@@ -7,17 +7,17 @@ import {
 } from 'rxjs';
 
 import { UseCase } from '../../../common';
-import { patientToPatientItemVM } from '../../mappers';
-import { PatientItemVM } from '../../models';
+import { customerToCustomerItemVM } from '../../mappers';
+import { CustomerItemVM } from '../../models';
 
 @Injectable()
 export class FindPatientByDocumentService
-  implements UseCase<PatientItemVM | null, string>
+  implements UseCase<CustomerItemVM | null, string>
 {
   constructor(private entityServices: CustomersService) { }
 
-  exec(document: string): Observable<PatientItemVM> {
+  exec(document: string): Observable<CustomerItemVM> {
     return this.entityServices.customersControllerFindOneByDocument(document)
-      .pipe(map(patientToPatientItemVM));
+      .pipe(map(customerToCustomerItemVM));
   }
 }

@@ -18,6 +18,7 @@ export interface ProductRespondeDto {
     description?: string;
     path?: string;
     price: number;
+    stock: number;
     category: object;
 }
 

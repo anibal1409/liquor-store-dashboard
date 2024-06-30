@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 
 import { MemoryRepository } from '../../../common/memory-repository';
-import { StudyItemVM } from '../../models';
+import { SaleItemVM } from '../../models';
 
 @Injectable()
-export class StudyMemoryService extends MemoryRepository<StudyItemVM> {
+export class StudyMemoryService extends MemoryRepository<SaleItemVM> {
   constructor() {
     super();
   }

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { ListComponentService } from '../common/memory-repository';
 import { TypesExamMemoryService } from './memory/types-exam-memory';
-import { TypeExamItemVM } from './model';
+import { CategoryItemVM } from './model';
 import {
   CreateTypeExamService,
   DeleteTypeExamService,
@@ -12,7 +12,7 @@ import {
 } from './use-cases';
 
 @Injectable()
-export class TypesExamService extends ListComponentService<TypeExamItemVM> {
+export class TypesExamService extends ListComponentService<CategoryItemVM> {
   constructor(
     public getSchoolsService: GetTypesExamService,
     public typesExamMemoryService: TypesExamMemoryService,

@@ -167,16 +167,17 @@ export class ProductsService {
      * @param status 
      * @param name 
      * @param price 
+     * @param stock 
      * @param moreOrequal 
      * @param lessOrEqual 
      * @param categoryId 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public productsControllerFindAll(id?: number, status?: boolean, name?: string, price?: number, moreOrequal?: number, lessOrEqual?: number, categoryId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<ProductRespondeDto>>;
-    public productsControllerFindAll(id?: number, status?: boolean, name?: string, price?: number, moreOrequal?: number, lessOrEqual?: number, categoryId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<ProductRespondeDto>>>;
-    public productsControllerFindAll(id?: number, status?: boolean, name?: string, price?: number, moreOrequal?: number, lessOrEqual?: number, categoryId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<ProductRespondeDto>>>;
-    public productsControllerFindAll(id?: number, status?: boolean, name?: string, price?: number, moreOrequal?: number, lessOrEqual?: number, categoryId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public productsControllerFindAll(id?: number, status?: boolean, name?: string, price?: number, stock?: number, moreOrequal?: number, lessOrEqual?: number, categoryId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<ProductRespondeDto>>;
+    public productsControllerFindAll(id?: number, status?: boolean, name?: string, price?: number, stock?: number, moreOrequal?: number, lessOrEqual?: number, categoryId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<ProductRespondeDto>>>;
+    public productsControllerFindAll(id?: number, status?: boolean, name?: string, price?: number, stock?: number, moreOrequal?: number, lessOrEqual?: number, categoryId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<ProductRespondeDto>>>;
+    public productsControllerFindAll(id?: number, status?: boolean, name?: string, price?: number, stock?: number, moreOrequal?: number, lessOrEqual?: number, categoryId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (id !== undefined && id !== null) {
@@ -194,6 +195,10 @@ export class ProductsService {
         if (price !== undefined && price !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>price, 'price');
+        }
+        if (stock !== undefined && stock !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>stock, 'stock');
         }
         if (moreOrequal !== undefined && moreOrequal !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,

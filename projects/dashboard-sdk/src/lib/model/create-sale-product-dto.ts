@@ -16,6 +16,7 @@ export interface CreateSaleProductDto {
     id?: number;
     amount: string;
     price: string;
+    subtotal: string;
     product: IdCreateEntity;
 }
 

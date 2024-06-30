@@ -13,17 +13,17 @@ import {
 } from '../../../common/memory-repository';
 import { typeExam2typeExamtemVM } from '../../mapper';
 import { TypesExamMemoryService } from '../../memory';
-import { TypeExamItemVM } from '../../model';
+import { CategoryItemVM } from '../../model';
 
 @Injectable()
-export class GetTypesExamService implements UseCase<Array<TypeExamItemVM> | null, BaseQuery> {
+export class GetTypesExamService implements UseCase<Array<CategoryItemVM> | null, BaseQuery> {
 
   constructor(
     private httpService: CategoriesService,
     private memoryService: TypesExamMemoryService,
   ) {}
 
-  exec(): Observable<Array<TypeExamItemVM>> {
+  exec(): Observable<Array<CategoryItemVM>> {
     return this.httpService.categoriesControllerFindAll()
     .pipe(
       map((items: any) => items.map(typeExam2typeExamtemVM)),

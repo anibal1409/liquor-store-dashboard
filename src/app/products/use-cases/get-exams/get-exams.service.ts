@@ -1,33 +1,35 @@
 import { Injectable } from '@angular/core';
 
+import { ProductsService } from 'dashboard-sdk';
 import {
+  map,
   Observable,
-  of,
+  tap,
 } from 'rxjs';
 
 import {
   BaseQuery,
   UseCase,
 } from '../../../common';
+import { examToExamItemVM } from '../../mappers';
 import { ExamMemoryService } from '../../memory';
-import { ExamItemVM } from '../../models';
+import { ProductItemVM } from '../../models';
 
 @Injectable()
-export class GetExamsService implements UseCase<Array<ExamItemVM> | null, BaseQuery> {
+export class GetExamsService implements UseCase<Array<ProductItemVM> | null, BaseQuery> {
 
   constructor(
-    // private httpService: ExamsService,
+    private httpService: ProductsService,
     private memoryService: ExamMemoryService,
   ) {}
 
-  exec(): Observable<Array<ExamItemVM>> {
-    return of();
-    // return this.httpService.examsControllerFindAll()
-    // .pipe(
-    //   map((items: any) => items.map(examToExamItemVM)),
-    //   tap((items) => {
-    //     this.memoryService.setDataSource(items);
-    //   })
-    // );
+  exec(): Observable<Array<ProductItemVM>> {
+    return this.httpService.productsControllerFindAll()
+    .pipe(
+      map((items: any) => items.map(examToExamItemVM)),
+      tap((items) => {
+        this.memoryService.setDataSource(items);
+      })
+    );
   }
 }

@@ -12,11 +12,11 @@
 
 
 export interface CreateCustomerDto { 
-    email: string;
     idDocument: string;
-    name: string;
-    address: string;
+    firstName: string;
+    lastName: string;
     status: boolean;
-    phone?: string;
+    phone: string;
+    gender: string;
 }
 

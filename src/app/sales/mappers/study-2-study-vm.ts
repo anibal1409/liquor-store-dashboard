@@ -1,18 +1,17 @@
-import { patientToPatientItemVM } from '../../customers/mappers';
-import { StudyVM } from '../models';
+import { customerToCustomerItemVM } from '../../customers/mappers';
+import { SaleVM } from '../models';
 
-export function study2StudyVM(study: any): StudyVM {
-  const patient = patientToPatientItemVM(study?.patient);
+export function study2StudyVM(sale: any): SaleVM {
+  const customer = customerToCustomerItemVM(sale?.customer);
   return {
-    date: study.date,
-    patient,
-    patientId: study.patient?.id,
-    sendEmail: study.sendEmail,
-    stage: study.stage,
-    status: study.status,
-    total: study.total,
-    id: study.id,
-    note: study.note,
-    studyExams: study.studyExams,
+    date: sale.date,
+    customer: customer,
+    customerId: sale.customer?.id,
+    stage: sale.stage,
+    status: sale.status,
+    total: sale.total,
+    id: sale.id,
+    note: sale.note,
+    saleProducts: sale.saleProducts,
   };
 }

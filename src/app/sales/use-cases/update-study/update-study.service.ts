@@ -1,48 +1,53 @@
 import { Injectable } from '@angular/core';
 
+import { SaleService } from 'dashboard-sdk';
 import {
+  map,
   Observable,
-  of,
+  tap,
 } from 'rxjs';
 
 import { UseCase } from '../../../common/memory-repository';
+import { study2StudyItemVM } from '../../mappers';
 import { StudyMemoryService } from '../../memory';
-import { StudyVM } from '../../models';
-import { StudyItemVM } from '../../models/study-item-vm';
+import { SaleVM } from '../../models';
+import { SaleItemVM } from '../../models/sale-item-vm';
 
 @Injectable()
 export class UpdateStudyService
-  implements UseCase<StudyItemVM | null, StudyVM>
+  implements UseCase<SaleItemVM | null, SaleVM>
 {
   constructor(
-    // private entityServices: StudiesService,
+    private entityServices: SaleService,
     private memoryService: StudyMemoryService,
   ) { }
 
-  exec(entitySave: StudyVM): Observable<StudyItemVM> {
-    return of();
-    // return this.entityServices
-    //   .studiesControllerUpdate(
-    //     entitySave.id?.toString() || '0',
-    //     {
-    //       date: entitySave.date,
-    //       note: entitySave.note,
-    //       total: entitySave.total,
-    //       patient: { id: entitySave.patientId },
-    //       sendEmail: entitySave.sendEmail,
-    //       stage: entitySave.stage,
-    //       studyExams: entitySave.studyExams.map((x) => ({
-    //         id: x.id,
-    //         exam: { id: x.examId },
-    //         value: x.value,
-    //       })) as any,
-    //     }
-    //   )
-    //   .pipe(
-    //     map(study2StudyItemVM),
-    //     tap((entity) => {
-    //       this.memoryService.create(entity);
-    //     })
-    //   );
+  exec(entitySave: SaleVM): Observable<SaleItemVM> {
+    console.log(entitySave);
+    
+    return this.entityServices
+      .salesControllerUpdate(
+        entitySave.id?.toString() || '0',
+        {
+          date: entitySave.date,
+          note: entitySave.note,
+          total: +entitySave.total,
+          customer: { id: entitySave.customerId },
+          stage: entitySave.stage,
+          saleProducts: entitySave.saleProducts.map((x) => ({
+            id: x.id,
+            product: { id: x.productId },
+            price: +x.price,
+            amount: +x.amount,
+            subtotal: +x.subtotal,
+          })) as any,
+        }
+      )
+      .pipe(
+        map(study2StudyItemVM),
+        tap((entity) => {
+          this.memoryService.create(entity);
+        })
+      );
   }
 }
