@@ -35,6 +35,7 @@ import {
   DeleteStudyService,
   FindStudyService,
   GetStudiesService,
+  ReportSaleService,
   UpdateStudyService,
 } from './use-cases';
 
@@ -74,6 +75,7 @@ import {
     GetStudiesService,
     FindStudyService,
     CurrencyPipe,
+    ReportSaleService,
   ],
 })
 export class StudiesModule { }

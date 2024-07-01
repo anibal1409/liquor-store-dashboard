@@ -134,7 +134,7 @@
       </div>
       <div class="col-md-1 col-12">
         {{
-          formDisabled ? '' : 'Acciones'
+          formDisabled || !showDelete ? '' : 'Acciones'
         }}
       </div>
     </div>
@@ -227,7 +227,7 @@
     *ngIf="showPrint"
     mat-button
     type="button"
-    (click)="clickSave()"
+    (click)="generateReportSale()"
     color="primary"
     [disabled]="submitDisabled || loading"
     title="Imprimir"

@@ -340,7 +340,7 @@ export class FormComponent implements OnInit, OnDestroy {
 
   private getProducts(): void {
     this.sub$.add(
-      this.entityService.getExams$().subscribe(
+      this.entityService.getProducts$().subscribe(
         (products) => {
           this.products = products;
           this.productsBase = products;
@@ -363,6 +363,25 @@ export class FormComponent implements OnInit, OnDestroy {
 
   back(): void {
     this.location.back();
+  }
+
+
+  generateReportSale(): void {
+    this.sub$.add(
+      this.entityService.generateReportSale({
+        id: this.id
+      }).subscribe(
+        (report) => {
+          console.log(report);
+          const link = document.createElement('a');
+          link.href = report?.reportUrl;
+          link.target = '_black';
+          link.download = report?.name;
+          link.click();
+          
+        }
+      )
+    );
   }
 
 }

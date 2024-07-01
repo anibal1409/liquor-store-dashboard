@@ -19,6 +19,7 @@ import {
   DeleteStudyService,
   FindStudyService,
   GetStudiesService,
+  ReportSaleService,
   UpdateStudyService,
 } from './use-cases';
 
@@ -33,6 +34,7 @@ export class StudiesService extends ListComponentService<SaleItemVM, BaseQuery> 
     public updateEntityService: UpdateStudyService,
     private findPatientByDocumentService: FindPatientByDocumentService,
     private getExamsService: GetExamsService,
+    private reportSaleService: ReportSaleService,
   ) {
     super(
       getEntityService,
@@ -53,7 +55,11 @@ export class StudiesService extends ListComponentService<SaleItemVM, BaseQuery> 
     );
   }
 
-  getExams$(): Observable<Array<ProductItemVM>> {
+  getProducts$(): Observable<Array<ProductItemVM>> {
     return this.getExamsService.exec();
+  }
+
+  generateReportSale(data: BaseQuery): Observable<any> {
+    return this.reportSaleService.exec(data);
   }
 }
