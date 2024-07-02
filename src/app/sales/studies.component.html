@@ -7,7 +7,18 @@
         emptyMessage="No hay registros para mostrar"
         emptySearchMessage="Ningún registro coincide con la busqueda"
         (clickOption)="clickAction($event)"
-      ></app-table>
+      >
+        <div filters>
+          <button
+            mat-raised-button
+            type="button"
+            (click)="goReport()"
+            color="primary"
+          >
+            Reporte
+          </button>
+        </div>
+      </app-table>
     </mat-card-content>
   </mat-card>
   <button

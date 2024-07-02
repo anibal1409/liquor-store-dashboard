@@ -34,7 +34,7 @@ import {
   STAGES_ACTIVES,
   StageSale,
 } from '../models/stage';
-import { StudiesService } from '../studies.service';
+import { SalesService } from '../sales.service';
 
 @Component({
   selector: 'app-form',
@@ -84,7 +84,7 @@ export class FormComponent implements OnInit, OnDestroy {
   subArray$ = new Subscription();
 
   constructor(
-    private entityService: StudiesService,
+    private entityService: SalesService,
     private formBuilder: FormBuilder,
     private activatedRoute: ActivatedRoute,
     private router: Router,

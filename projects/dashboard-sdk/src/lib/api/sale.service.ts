@@ -168,6 +168,7 @@ export class SaleService {
      * @param id 
      * @param status 
      * @param customerName 
+     * @param stage 
      * @param date 
      * @param categoryId 
      * @param customerId 
@@ -176,10 +177,10 @@ export class SaleService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public salesControllerFindAll(id?: number, status?: boolean, customerName?: string, date?: string, categoryId?: number, customerId?: number, start?: string, end?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<SaleRespondeDto>>;
-    public salesControllerFindAll(id?: number, status?: boolean, customerName?: string, date?: string, categoryId?: number, customerId?: number, start?: string, end?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<SaleRespondeDto>>>;
-    public salesControllerFindAll(id?: number, status?: boolean, customerName?: string, date?: string, categoryId?: number, customerId?: number, start?: string, end?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<SaleRespondeDto>>>;
-    public salesControllerFindAll(id?: number, status?: boolean, customerName?: string, date?: string, categoryId?: number, customerId?: number, start?: string, end?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public salesControllerFindAll(id?: number, status?: boolean, customerName?: string, stage?: string, date?: string, categoryId?: number, customerId?: number, start?: string, end?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<SaleRespondeDto>>;
+    public salesControllerFindAll(id?: number, status?: boolean, customerName?: string, stage?: string, date?: string, categoryId?: number, customerId?: number, start?: string, end?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<SaleRespondeDto>>>;
+    public salesControllerFindAll(id?: number, status?: boolean, customerName?: string, stage?: string, date?: string, categoryId?: number, customerId?: number, start?: string, end?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<SaleRespondeDto>>>;
+    public salesControllerFindAll(id?: number, status?: boolean, customerName?: string, stage?: string, date?: string, categoryId?: number, customerId?: number, start?: string, end?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (id !== undefined && id !== null) {
@@ -193,6 +194,10 @@ export class SaleService {
         if (customerName !== undefined && customerName !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>customerName, 'customerName');
+        }
+        if (stage !== undefined && stage !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>stage, 'stage');
         }
         if (date !== undefined && date !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
@@ -365,6 +370,107 @@ export class SaleService {
         return this.httpClient.request<ReportsResponseDto>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param id 
+     * @param status 
+     * @param customerName 
+     * @param stage 
+     * @param date 
+     * @param categoryId 
+     * @param customerId 
+     * @param start 
+     * @param end 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public salesControllerGenerateReport(id?: number, status?: boolean, customerName?: string, stage?: string, date?: string, categoryId?: number, customerId?: number, start?: string, end?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ReportsResponseDto>;
+    public salesControllerGenerateReport(id?: number, status?: boolean, customerName?: string, stage?: string, date?: string, categoryId?: number, customerId?: number, start?: string, end?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ReportsResponseDto>>;
+    public salesControllerGenerateReport(id?: number, status?: boolean, customerName?: string, stage?: string, date?: string, categoryId?: number, customerId?: number, start?: string, end?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ReportsResponseDto>>;
+    public salesControllerGenerateReport(id?: number, status?: boolean, customerName?: string, stage?: string, date?: string, categoryId?: number, customerId?: number, start?: string, end?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (id !== undefined && id !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>id, 'id');
+        }
+        if (status !== undefined && status !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>status, 'status');
+        }
+        if (customerName !== undefined && customerName !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>customerName, 'customerName');
+        }
+        if (stage !== undefined && stage !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>stage, 'stage');
+        }
+        if (date !== undefined && date !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>date, 'date');
+        }
+        if (categoryId !== undefined && categoryId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>categoryId, 'categoryId');
+        }
+        if (customerId !== undefined && customerId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>customerId, 'customerId');
+        }
+        if (start !== undefined && start !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>start, 'start');
+        }
+        if (end !== undefined && end !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>end, 'end');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/sales/resports`;
+        return this.httpClient.request<ReportsResponseDto>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

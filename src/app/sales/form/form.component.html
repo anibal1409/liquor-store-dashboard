@@ -229,13 +229,13 @@
     type="button"
     (click)="generateReportSale()"
     color="primary"
-    [disabled]="submitDisabled || loading"
+    [disabled]="loading"
     title="Imprimir"
   >
     <mat-icon>print</mat-icon>
   </button>
 
-  <ng-container *ngIf="hiddenFooter"
+  <ng-container *ngIf="true"
   >
     <button
       mat-button

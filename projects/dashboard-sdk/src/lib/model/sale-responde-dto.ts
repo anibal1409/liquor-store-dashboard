@@ -16,6 +16,7 @@ export interface SaleRespondeDto {
     id: number;
     date: string;
     note?: string;
+    stage: string;
     total: number;
     customer: object;
     saleProducts: Array<CreateSaleProductDto>;

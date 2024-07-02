@@ -21,7 +21,7 @@ import {
   RowActionSale,
   SaleItemVM,
 } from './models';
-import { StudiesService } from './studies.service';
+import { SalesService } from './sales.service';
 
 @Component({
   selector: 'app-studies',
@@ -66,7 +66,7 @@ export class StudiesComponent implements OnInit, OnDestroy {
   private sub$ = new Subscription();
   constructor(
     private tableService: TableService,
-    private usersService: StudiesService,
+    private usersService: SalesService,
     private stateService: StateService,
     private matDialog: MatDialog,
     private router: Router,
@@ -133,5 +133,8 @@ export class StudiesComponent implements OnInit, OnDestroy {
       }
     });
   }
-}
 
+  goReport(): void {
+    this.router.navigate(['/dashboard/sales/report']);
+  }
+}

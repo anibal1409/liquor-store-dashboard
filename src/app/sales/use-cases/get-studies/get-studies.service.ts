@@ -13,7 +13,10 @@ import {
 } from '../../../common/memory-repository';
 import { study2StudyItemVM } from '../../mappers';
 import { StudyMemoryService } from '../../memory/study-memory';
-import { SaleItemVM } from '../../models';
+import {
+  SaleBaseQuery,
+  SaleItemVM,
+} from '../../models';
 
 @Injectable()
 export class GetStudiesService
@@ -24,7 +27,7 @@ export class GetStudiesService
     private memoryService: StudyMemoryService,
   ) { }
 
-  exec(data: BaseQuery = {}): Observable<Array<SaleItemVM>> {
+  exec(data: SaleBaseQuery = {}): Observable<Array<SaleItemVM>> {
     return this.entityServices.salesControllerFindAll()
       .pipe(
         map((entities: any) => entities.map(study2StudyItemVM)),

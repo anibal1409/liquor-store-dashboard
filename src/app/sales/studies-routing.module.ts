@@ -5,6 +5,7 @@ import {
 } from '@angular/router';
 
 import { FormComponent } from './form';
+import { ReportComponent } from './report';
 import { StudiesComponent } from './studies.component';
 
 const routes: Routes = [
@@ -15,6 +16,10 @@ const routes: Routes = [
   {
     path: 'form',
     component: FormComponent,
+  },
+  {
+    path: 'report',
+    component: ReportComponent,
   }
 ];
 

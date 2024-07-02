@@ -5,26 +5,27 @@ import {
   Observable,
 } from 'rxjs';
 
-import {
-  BaseQuery,
-  ListComponentService,
-} from '../common/memory-repository';
+import { ListComponentService } from '../common/memory-repository';
 import { FindPatientByDocumentService } from '../customers/use-cases';
 import { ProductItemVM } from '../products';
 import { GetExamsService } from '../products/use-cases/get-exams';
 import { StudyMemoryService } from './memory';
-import { SaleItemVM } from './models';
+import {
+  SaleBaseQuery,
+  SaleItemVM,
+} from './models';
 import {
   CreateStudyService,
   DeleteStudyService,
   FindStudyService,
   GetStudiesService,
   ReportSaleService,
+  ReportSalesService,
   UpdateStudyService,
 } from './use-cases';
 
 @Injectable()
-export class StudiesService extends ListComponentService<SaleItemVM, BaseQuery> {
+export class SalesService extends ListComponentService<SaleItemVM, SaleBaseQuery> {
   constructor(
     public getEntityService: GetStudiesService,
     public memoryEntityService: StudyMemoryService,
@@ -35,6 +36,7 @@ export class StudiesService extends ListComponentService<SaleItemVM, BaseQuery> 
     private findPatientByDocumentService: FindPatientByDocumentService,
     private getExamsService: GetExamsService,
     private reportSaleService: ReportSaleService,
+    private reportSalesService: ReportSalesService,
   ) {
     super(
       getEntityService,
@@ -59,7 +61,21 @@ export class StudiesService extends ListComponentService<SaleItemVM, BaseQuery> 
     return this.getExamsService.exec();
   }
 
-  generateReportSale(data: BaseQuery): Observable<any> {
-    return this.reportSaleService.exec(data);
+  generateReportSale(data: SaleBaseQuery): Observable<any> {
+    this.setLoading(true);
+    return this.reportSaleService.exec(data).pipe(
+      finalize(
+        () => this.setLoading(false)
+      )
+    );
+  }
+
+  generateReportSales(data: SaleBaseQuery): Observable<any> {
+    this.setLoading(true);
+    return this.reportSalesService.exec(data).pipe(
+      finalize(
+        () => this.setLoading(false)
+      )
+    );
   }
 }

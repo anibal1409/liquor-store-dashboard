@@ -13,5 +13,6 @@
 
 export interface ReportsResponseDto { 
     reportUrl: string;
+    name: string;
 }
 

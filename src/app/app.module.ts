@@ -55,7 +55,7 @@ const maskConfig: Partial<IConfig> = {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,

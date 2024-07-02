@@ -20,6 +20,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { CurrencyMaskModule } from 'ng2-currency-mask';
 
 import {
+  SafeModule,
   StateModule,
   TableModule,
 } from '../common';
@@ -27,15 +28,17 @@ import { PatientsModule } from '../customers';
 import { ExamsModule } from '../products';
 import { FormComponent } from './form/form.component';
 import { StudyMemoryService } from './memory';
+import { ReportComponent } from './report/report.component';
+import { SalesService } from './sales.service';
 import { StudiesRoutingModule } from './studies-routing.module';
 import { StudiesComponent } from './studies.component';
-import { StudiesService } from './studies.service';
 import {
   CreateStudyService,
   DeleteStudyService,
   FindStudyService,
   GetStudiesService,
   ReportSaleService,
+  ReportSalesService,
   UpdateStudyService,
 } from './use-cases';
 
@@ -43,6 +46,7 @@ import {
   declarations: [
     StudiesComponent,
     FormComponent,
+    ReportComponent,
   ],
   imports: [
     CommonModule,
@@ -65,9 +69,10 @@ import {
     MatCheckboxModule,
     ExamsModule,
     CurrencyMaskModule,
+    SafeModule,
   ],
   providers: [
-    StudiesService,
+    SalesService,
     StudyMemoryService,
     CreateStudyService,
     UpdateStudyService,
@@ -76,6 +81,7 @@ import {
     FindStudyService,
     CurrencyPipe,
     ReportSaleService,
+    ReportSalesService,
   ],
 })
 export class StudiesModule { }
