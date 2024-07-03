@@ -4,7 +4,7 @@ import { MemoryRepository } from '../../../common/memory-repository';
 import { SaleItemVM } from '../../models';
 
 @Injectable()
-export class StudyMemoryService extends MemoryRepository<SaleItemVM> {
+export class SaleMemoryService extends MemoryRepository<SaleItemVM> {
   constructor() {
     super();
   }

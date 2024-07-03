@@ -11,26 +11,26 @@ import {
   BaseQuery,
   UseCase,
 } from '../../../common/memory-repository';
-import { sale2SaleItemVM } from '../../mappers';
-import { SaleMemoryService } from '../../memory/sales-memory';
+import { order2OrderItemVM } from '../../mappers';
+import { OrderMemoryService } from '../../memory/order-memory';
 import {
-  SaleBaseQuery,
-  SaleItemVM,
+  OrderBaseQuery,
+  OrderItemVM,
 } from '../../models';
 
 @Injectable()
 export class GetStudiesService
-  implements UseCase<Array<SaleItemVM> | null, BaseQuery> {
+  implements UseCase<Array<OrderItemVM> | null, BaseQuery> {
 
   constructor(
     private entityServices: SaleService,
-    private memoryService: SaleMemoryService,
+    private memoryService: OrderMemoryService,
   ) { }
 
-  exec(data: SaleBaseQuery = {}): Observable<Array<SaleItemVM>> {
+  exec(data: OrderBaseQuery = {}): Observable<Array<OrderItemVM>> {
     return this.entityServices.salesControllerFindAll()
       .pipe(
-        map((entities: any) => entities.map(sale2SaleItemVM)),
+        map((entities: any) => entities.map(order2OrderItemVM)),
         tap((entity) => {
           this.memoryService.setDataSource(entity);
         })

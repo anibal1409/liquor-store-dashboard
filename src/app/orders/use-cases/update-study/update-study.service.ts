@@ -8,21 +8,21 @@ import {
 } from 'rxjs';
 
 import { UseCase } from '../../../common/memory-repository';
-import { sale2SaleItemVM } from '../../mappers';
-import { SaleMemoryService } from '../../memory';
-import { SaleVM } from '../../models';
-import { SaleItemVM } from '../../models/sale-item-vm';
+import { order2OrderItemVM } from '../../mappers';
+import { OrderMemoryService } from '../../memory';
+import { OrderVM } from '../../models';
+import { OrderItemVM } from '../../models/order-item-vm';
 
 @Injectable()
 export class UpdateStudyService
-  implements UseCase<SaleItemVM | null, SaleVM>
+  implements UseCase<OrderItemVM | null, OrderVM>
 {
   constructor(
     private entityServices: SaleService,
-    private memoryService: SaleMemoryService,
+    private memoryService: OrderMemoryService,
   ) { }
 
-  exec(entitySave: SaleVM): Observable<SaleItemVM> {
+  exec(entitySave: OrderVM): Observable<OrderItemVM> {
     console.log(entitySave);
     
     return this.entityServices
@@ -44,7 +44,7 @@ export class UpdateStudyService
         }
       )
       .pipe(
-        map(sale2SaleItemVM),
+        map(order2OrderItemVM),
         tap((entity) => {
           this.memoryService.create(entity);
         })

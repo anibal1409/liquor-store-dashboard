@@ -10,20 +10,20 @@ import {
   BaseQuery,
   UseCase,
 } from '../../../common/memory-repository';
-import { sale2SaleVM } from '../../mappers';
-import { SaleItemVM } from '../../models';
+import { order2OrderVM } from '../../mappers';
+import { OrderItemVM } from '../../models';
 
 @Injectable()
 export class FindStudyService
-  implements UseCase<SaleItemVM | null, BaseQuery>
+  implements UseCase<OrderItemVM | null, BaseQuery>
 {
   constructor(
     private entityServices: SaleService
   ) { }
 
-  exec(data: BaseQuery): Observable<SaleItemVM> {
+  exec(data: BaseQuery): Observable<OrderItemVM> {
     return this.entityServices
     .salesControllerFindOne(data?.id?.toString() || '0')
-    .pipe(map(sale2SaleVM));
+    .pipe(map(order2OrderVM));
   }
 }

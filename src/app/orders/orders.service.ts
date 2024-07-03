@@ -9,10 +9,10 @@ import { ListComponentService } from '../common/memory-repository';
 import { FindPatientByDocumentService } from '../customers/use-cases';
 import { ProductItemVM } from '../products';
 import { GetExamsService } from '../products/use-cases/get-exams';
-import { SaleMemoryService } from './memory';
+import { OrderMemoryService } from './memory';
 import {
-  SaleBaseQuery,
-  SaleItemVM,
+  OrderBaseQuery,
+  OrderItemVM,
 } from './models';
 import {
   CreateStudyService,
@@ -25,10 +25,10 @@ import {
 } from './use-cases';
 
 @Injectable()
-export class SalesService extends ListComponentService<SaleItemVM, SaleBaseQuery> {
+export class OrdersService extends ListComponentService<OrderItemVM, OrderBaseQuery> {
   constructor(
     public getEntityService: GetStudiesService,
-    public memoryEntityService: SaleMemoryService,
+    public memoryEntityService: OrderMemoryService,
     public createEntityService: CreateStudyService,
     public deleteEntityService: DeleteStudyService,
     public findEntityService: FindStudyService,
@@ -61,7 +61,7 @@ export class SalesService extends ListComponentService<SaleItemVM, SaleBaseQuery
     return this.getExamsService.exec();
   }
 
-  generateReportSale(data: SaleBaseQuery): Observable<any> {
+  generateReportSale(data: OrderBaseQuery): Observable<any> {
     this.setLoading(true);
     return this.reportSaleService.exec(data).pipe(
       finalize(
@@ -70,7 +70,7 @@ export class SalesService extends ListComponentService<SaleItemVM, SaleBaseQuery
     );
   }
 
-  generateReportSales(data: SaleBaseQuery): Observable<any> {
+  generateReportSales(data: OrderBaseQuery): Observable<any> {
     this.setLoading(true);
     return this.reportSalesService.exec(data).pipe(
       finalize(

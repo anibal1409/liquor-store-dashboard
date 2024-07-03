@@ -1,1 +1,1 @@
-export * from './study-memory';
+export * from './sales-memory';

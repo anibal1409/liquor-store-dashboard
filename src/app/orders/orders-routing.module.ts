@@ -5,13 +5,13 @@ import {
 } from '@angular/router';
 
 import { FormComponent } from './form';
+import { OrdersComponent } from './orders.component';
 import { ReportComponent } from './report';
-import { StudiesComponent } from './studies.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: StudiesComponent,
+    component: OrdersComponent,
   },
   {
     path: 'form',
@@ -27,4 +27,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class StudiesRoutingModule { }
+export class OrdersRoutingModule { }

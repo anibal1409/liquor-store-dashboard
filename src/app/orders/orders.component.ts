@@ -18,17 +18,17 @@ import {
   TableService,
 } from '../common';
 import {
-  RowActionSale,
-  SaleItemVM,
+  OrderItemVM,
+  RowActionOrder,
 } from './models';
-import { SalesService } from './sales.service';
+import { OrdersService } from './orders.service';
 
 @Component({
-  selector: 'app-studies',
-  templateUrl: './studies.component.html',
-  styleUrls: ['./studies.component.scss']
+  selector: 'app-orders',
+  templateUrl: './orders.component.html',
+  styleUrls: ['./orders.component.scss']
 })
-export class StudiesComponent implements OnInit, OnDestroy {
+export class OrdersComponent implements OnInit, OnDestroy {
   data: TableDataVM = {
     headers: [
       {
@@ -66,7 +66,7 @@ export class StudiesComponent implements OnInit, OnDestroy {
   private sub$ = new Subscription();
   constructor(
     private tableService: TableService,
-    private usersService: SalesService,
+    private entityService: OrdersService,
     private stateService: StateService,
     private matDialog: MatDialog,
     private router: Router,
@@ -75,14 +75,14 @@ export class StudiesComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.sub$.add(
-      this.usersService.getLoading$().subscribe((loading) => {
+      this.entityService.getLoading$().subscribe((loading) => {
         this.loading = loading;
         this.stateService.setLoading(loading);
       })
     );
     
     this.sub$.add(
-      this.usersService.getData$().subscribe((data) => {
+      this.entityService.getData$().subscribe((data) => {
         console.log(data);
         this.data = {
           ...this.data,
@@ -92,7 +92,7 @@ export class StudiesComponent implements OnInit, OnDestroy {
         this.tableService.setData(this.data);
       })
     );
-    this.usersService.get({});
+    this.entityService.get({});
   }
 
   ngOnDestroy(): void {
@@ -101,20 +101,20 @@ export class StudiesComponent implements OnInit, OnDestroy {
   
   clickAction(option: OptionAction) {
     switch (option.option.value) {
-      case RowActionSale.update:
+      case RowActionOrder.update:
         this.router.navigate(['/dashboard/sales/form'], {
           queryParams: {
             id: option.data['id'],
           }
         });
         break;
-      case RowActionSale.delete:
+      case RowActionOrder.delete:
         this.showConfirm(option.data as any);
         break;
     }
   }
 
-  showConfirm(item: SaleItemVM): void {
+  showConfirm(item: OrderItemVM): void {
     const dialogRef = this.matDialog.open(ConfirmModalComponent, {
       data: {
         message: {
@@ -129,7 +129,7 @@ export class StudiesComponent implements OnInit, OnDestroy {
     dialogRef.componentInstance.closed.subscribe((res) => {
       dialogRef.close();
       if (res) {
-        this.usersService.delete(item?.id || 0);
+        this.entityService.delete(item?.id || 0);
       }
     });
   }

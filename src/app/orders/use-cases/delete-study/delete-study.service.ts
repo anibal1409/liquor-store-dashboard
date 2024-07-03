@@ -8,14 +8,14 @@ import {
 } from 'rxjs';
 
 import { UseCase } from '../../../common/memory-repository';
-import { SaleMemoryService } from '../../memory/sales-memory';
+import { OrderMemoryService } from '../../memory/order-memory';
 
 @Injectable()
 export class DeleteStudyService
 implements UseCase<number, number> {
   constructor(
     private entityServices: SaleService,
-    private memoryService: SaleMemoryService,
+    private memoryService: OrderMemoryService,
   ) { }
 
   exec(id: number): Observable<number> {

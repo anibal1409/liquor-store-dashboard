@@ -9,10 +9,10 @@ import {
   STAGE_STUDY_VALUE,
   STAGES_ACTIVES,
 } from '../models/stage';
-import { study2StudyVM } from './study-2-study-vm';
+import { sale2SaleVM } from './sale-2-sale-vm';
 
-export function study2StudyItemVM(sale: any): SaleItemVM {
-  const studyVM: SaleVM = study2StudyVM(sale);
+export function sale2SaleItemVM(sale: any): SaleItemVM {
+  const studyVM: SaleVM = sale2SaleVM(sale);
   const customer = customerToCustomerItemVM(sale?.customer);
   return { 
     ...studyVM,

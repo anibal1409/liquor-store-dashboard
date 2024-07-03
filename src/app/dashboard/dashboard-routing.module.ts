@@ -38,7 +38,7 @@ const routes: Routes = [
       },
       {
         path: 'sales',
-        loadChildren: () => import('../sales/studies.module').then(m => m.StudiesModule),
+        loadChildren: () => import('../sales/sales.module').then(m => m.SalesModule),
       },
       {
         path: 'profile',

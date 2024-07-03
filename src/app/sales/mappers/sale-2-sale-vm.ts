@@ -1,7 +1,7 @@
 import { customerToCustomerItemVM } from '../../customers/mappers';
 import { SaleVM } from '../models';
 
-export function study2StudyVM(sale: any): SaleVM {
+export function sale2SaleVM(sale: any): SaleVM {
   const customer = customerToCustomerItemVM(sale?.customer);
   return {
     date: sale.date,

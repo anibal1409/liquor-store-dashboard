@@ -27,11 +27,11 @@ import {
 import { PatientsModule } from '../customers';
 import { ExamsModule } from '../products';
 import { FormComponent } from './form/form.component';
-import { StudyMemoryService } from './memory';
+import { SaleMemoryService } from './memory';
 import { ReportComponent } from './report/report.component';
+import { SalesRoutingModule } from './sales-routing.module';
+import { SalesComponent } from './sales.component';
 import { SalesService } from './sales.service';
-import { StudiesRoutingModule } from './studies-routing.module';
-import { StudiesComponent } from './studies.component';
 import {
   CreateStudyService,
   DeleteStudyService,
@@ -44,13 +44,13 @@ import {
 
 @NgModule({
   declarations: [
-    StudiesComponent,
+    SalesComponent,
     FormComponent,
     ReportComponent,
   ],
   imports: [
     CommonModule,
-    StudiesRoutingModule,
+    SalesRoutingModule,
     MatCardModule,
     TableModule,
     MatIconModule,
@@ -73,7 +73,7 @@ import {
   ],
   providers: [
     SalesService,
-    StudyMemoryService,
+    SaleMemoryService,
     CreateStudyService,
     UpdateStudyService,
     DeleteStudyService,
@@ -84,4 +84,4 @@ import {
     ReportSalesService,
   ],
 })
-export class StudiesModule { }
+export class SalesModule { }
