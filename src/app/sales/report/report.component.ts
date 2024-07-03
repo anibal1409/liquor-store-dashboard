@@ -34,7 +34,14 @@ export class ReportComponent  implements OnInit, OnDestroy {
   pdfSrc = '';
   searchCallback = searchCallback;
 
-  stagesStudy = STAGE_SALE;
+  stagesStudy = [
+    {
+      name: 'Todos',
+      value: null,
+      disabled: false,
+    } as any,
+    ...STAGE_SALE
+  ];
 
   private sub$ = new Subscription();
 

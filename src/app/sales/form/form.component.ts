@@ -31,7 +31,6 @@ import {
 } from '../models';
 import {
   STAGE_SALE,
-  STAGES_ACTIVES,
   StageSale,
 } from '../models/stage';
 import { SalesService } from '../sales.service';
@@ -156,9 +155,10 @@ export class FormComponent implements OnInit, OnDestroy {
                   emitEvent: false,
                 }
               );
+              this.updateShowPrint(entity.stage);
               this.form.get('customerDocument')?.disable();
               for (const saleProduct of entity.saleProducts) {
-                this.addExam(saleProduct);
+                this.addProduct(saleProduct);
               }
               this.updateProductValue();
             }
@@ -207,7 +207,6 @@ export class FormComponent implements OnInit, OnDestroy {
     const stage = this.form.get('stage')?.value;
     this.hiddenFooter = !this.showValuesAccept.includes(stage) && !this.formDisabled;
     this.showDelete = this.showValuesAccept.includes(stage);
-    this.showPrint = this.showValuesPrint.includes(stage) && !this.formDisabled;
     const disabled = !this.showValuesAccept.includes(stage);
     const formArray = this.saleProductsArray;
     for (let i = 0; i < formArray.length; i++) {
@@ -217,7 +216,7 @@ export class FormComponent implements OnInit, OnDestroy {
         formArray.at(i).get('amount')?.enable();
       }
     }
-    if (!STAGES_ACTIVES.includes(stage) && this.formDisabled) {
+    if (!this.showValuesAccept.includes(stage) || (this.showValuesPrint.includes(stage) && this.formDisabled)) {
       this.form.disable({ emitEvent: false });
       this.formDisabled = true;
     }
@@ -227,7 +226,7 @@ export class FormComponent implements OnInit, OnDestroy {
     return this.form.get('saleProducts') as FormArray;
   }
 
-  addExam(saleProduct?: SaleProduct) {
+  addProduct(saleProduct?: SaleProduct) {
     if (this.ctrlProduct.valid || saleProduct) {
       const product: ProductItemVM = this.ctrlProduct.value;
       if (product || saleProduct) {
@@ -235,9 +234,9 @@ export class FormComponent implements OnInit, OnDestroy {
           id: [null || saleProduct?.id],
           productId: [product?.id || saleProduct?.product?.id, Validators.required],
           name: [{ value: product?.name || saleProduct?.product?.name, disabled: true }, Validators.required],
-          amount: [1 || saleProduct?.amount, [Validators.required, Validators.min(0.01)]],
+          amount: [saleProduct?.amount || 1, [Validators.required, Validators.min(0.01)]],
           price: [{ value: product?.price || saleProduct?.price, disabled: true }],
-          subtotal: [{ value: product?.price * 1 || saleProduct?.subtotal, disabled: true }],
+          subtotal: [{ value: saleProduct?.subtotal || product?.price * 1 , disabled: true }],
         }));
 
         this.subArray$.unsubscribe();
@@ -291,7 +290,10 @@ export class FormComponent implements OnInit, OnDestroy {
             ...this.form.getRawValue(),
           })
           .subscribe(
-            () => {
+            (sale) => {
+              if (sale?.stage) {
+                this.updateShowPrint(sale.stage);
+              }
               this.form.reset();
               this.clickClosed();
               this.toastService.success('¡Venta creada exitosamente!');
@@ -310,7 +312,10 @@ export class FormComponent implements OnInit, OnDestroy {
             id: this.id,
           })
           .subscribe(
-            () => {
+            (sale) => {
+              if (sale?.stage) {
+                this.updateShowPrint(sale.stage);
+              }
               this.form.reset();
               this.clickClosed();
               this.toastService.success('¡Venta actualizada exitosamente!');
@@ -318,6 +323,13 @@ export class FormComponent implements OnInit, OnDestroy {
           )
       );
     }
+  }
+
+  updateShowPrint(stage: string): void {
+    this.showPrint = this.showValuesPrint.includes(stage as StageSale);
+    this.form.patchValue({
+      stage,
+    }, {emitEvent: false});
   }
 
   findPatient(): void {

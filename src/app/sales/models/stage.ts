@@ -3,6 +3,7 @@ export enum StageSale {
   Cancelled = 'Cancelled',
   Paid = 'Paid',
   Printed = 'Printed',
+  All = 'All',
 }
 
 
