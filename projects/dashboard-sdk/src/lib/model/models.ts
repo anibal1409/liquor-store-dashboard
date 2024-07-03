@@ -1,6 +1,7 @@
 export * from './category-responde-dto';
 export * from './change-password-dto';
 export * from './change-password-response-dto';
+export * from './change-password-user-dto';
 export * from './counters-responde-dto';
 export * from './create-category-dto';
 export * from './create-customer-dto';

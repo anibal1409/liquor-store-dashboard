@@ -12,5 +12,6 @@ export * from './state';
 export * from './table';
 export * from './text';
 export * from './timer';
+export * from './toggle-password';
 export * from './url-access-guard';
 export * from './user-state';

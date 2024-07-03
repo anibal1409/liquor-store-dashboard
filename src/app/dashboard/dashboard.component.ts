@@ -14,6 +14,7 @@ import {
   UserStateService,
   UserStateVM,
 } from '../common';
+import { ProfileService } from '../profile';
 import { UserRole } from '../users';
 import { DashboardService } from './dashboard.service';
 import { MENU } from './data';
@@ -92,6 +93,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private router: Router,
     private userStateService: UserStateService,
     private dashboardService: DashboardService,
+    private profileService: ProfileService,
   ) { }
 
   ngOnDestroy(): void {
@@ -170,5 +172,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   logout(): void {
     this.dashboardService.logout();
+  }
+
+  showProfile(): void{
+    this.profileService.showProfileModal();
+  }
+
+
+  showChangePassword(): void{
+    this.profileService.showChangePasswordModal();
   }
 }

@@ -16,23 +16,26 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { isEqual } from 'lodash';
 import { Subscription } from 'rxjs';
 
-import { ProductVM } from '../products';
+import { ProductVM } from '../../products';
 import {
   USER_ROLES,
   UserRole,
   UserVM,
-} from '../users';
-import { ProfileService } from './profile.service';
+} from '../../users';
+import { ProfileService } from '../profile.service';
 
 @Component({
-  selector: 'app-profile',
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss']
+  selector: 'app-change-password',
+  templateUrl: './change-password.component.html',
+  styleUrls: ['./change-password.component.scss']
 })
-export class ProfileComponent implements OnInit, OnDestroy {
+export class ChangePasswordComponent  implements OnInit, OnDestroy {
   id!: number;
   @Output()
   closed = new EventEmitter();
+
+  showPassword1 = false;
+  hide = true;
 
   form!: FormGroup;
   sub$ = new Subscription();
@@ -100,14 +103,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   private createForm(): void {
     this.form = this.formBuilder.group({
-      idDocument: [null, [Validators.required]],
-      birthdate: [null, [Validators.required]],
-      id: [0],
-      status: [true, [Validators.required]],
-      email: [{ value: null, disabled: true }, [Validators.required, Validators.email]],
-      role: [{ value: null, disabled: true }, [Validators.required]],
-      firstName: [null, [Validators.required]],
-      lastName: [null, [Validators.required]],
+      currentPassword: [null, [Validators.required, Validators.minLength(8), Validators.maxLength(16)]],
+      newPassword: [null, [Validators.required, Validators.minLength(8), Validators.maxLength(16)]],
+      confirmPassword: [null, [Validators.required, Validators.minLength(8), Validators.maxLength(16)]],
     });
 
     this.sub$.add(
@@ -123,7 +121,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     if (!this.submitDisabled) {
       this.sub$.add(
         this.entityService
-          .updateProfile$({
+          .changePassword$({
             ...this.form.getRawValue(),
           })
           .subscribe(
