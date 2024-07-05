@@ -182,7 +182,7 @@ export class FormComponent implements OnInit, OnDestroy {
       id: [0],
 
       total: [{ value: 0, disabled: true }, [Validators.required]],
-      saleProducts: this.formBuilder.array([]),
+      saleProducts: this.formBuilder.array([], [Validators.required]),
     });
 
     this.sub$.add(
