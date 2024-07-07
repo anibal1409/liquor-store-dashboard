@@ -12,6 +12,6 @@ export function sale2SaleVM(sale: any): SaleVM {
     total: sale.total,
     id: sale.id,
     note: sale.note,
-    saleProducts: sale.saleProducts,
+    saleProducts: sale.saleProducts || [],
   };
 }

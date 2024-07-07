@@ -24,8 +24,8 @@ import {
   StateModule,
   TableModule,
 } from '../common';
-import { PatientsModule } from '../customers';
-import { ExamsModule } from '../products';
+import { CustomersModule } from '../customers';
+import { ProductsModule } from '../products';
 import { FormComponent } from './form/form.component';
 import { SaleMemoryService } from './memory';
 import { ReportComponent } from './report/report.component';
@@ -64,10 +64,10 @@ import {
     StateModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    PatientsModule,
+    CustomersModule,
     MatDividerModule,
     MatCheckboxModule,
-    ExamsModule,
+    ProductsModule,
     CurrencyMaskModule,
     SafeModule,
   ],

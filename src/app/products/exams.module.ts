@@ -68,4 +68,4 @@ import {
     CurrencyPipe,
   ]
 })
-export class ExamsModule { }
+export class ProductsModule { }

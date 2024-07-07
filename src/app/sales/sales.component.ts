@@ -12,6 +12,7 @@ import { Subscription } from 'rxjs';
 
 import {
   ConfirmModalComponent,
+  formatNumberToDigits,
   OptionAction,
   StateService,
   TableDataVM,
@@ -32,24 +33,24 @@ export class SalesComponent implements OnInit, OnDestroy {
   data: TableDataVM = {
     headers: [
       {
+        columnDef: 'id',
+        header: 'Código',
+        cell: (element: { [key: string]: string }) => `${formatNumberToDigits(+element['id'])}`,
+      },
+      {
         columnDef: 'date',
         header: 'Fecha',
         cell: (element: { [key: string]: string }) => `${moment(element['date']).format('DD/MM/YYYY HH:mm')}`,
       },
       {
-        columnDef: 'patientName',
+        columnDef: 'customerName',
         header: 'Cliente',
-        cell: (element: { [key: string]: string }) => `${element['patientName']}`,
+        cell: (element: { [key: string]: string }) => `${element['customerName']}`,
       },
       {
         columnDef: 'stageText',
         header: 'Estado',
         cell: (element: { [key: string]: string }) => `${element['stageText']}`,
-      },
-      {
-        columnDef: 'counterExams',
-        header: 'N. de Productos',
-        cell: (element: { [key: string]: string }) => `${element['counterExams']}`,
       },
       {
         columnDef: 'total',
@@ -119,7 +120,7 @@ export class SalesComponent implements OnInit, OnDestroy {
       data: {
         message: {
           title: 'Eliminar venta',
-          body: `¿Está seguro que desea eliminar la venta de <strong>${item?.patientName}</strong>?`,
+          body: `¿Está seguro que desea eliminar la venta de <strong>${item?.customerName}</strong>?`,
         },
       },
       hasBackdrop: true,

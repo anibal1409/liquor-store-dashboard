@@ -70,4 +70,4 @@ import {
     FindPatientByDocumentService,
   ]
 })
-export class PatientsModule { }
+export class CustomersModule { }

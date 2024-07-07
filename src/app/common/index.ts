@@ -2,6 +2,7 @@ export * from './array-validator.directive';
 export * from './confirm-modal';
 export * from './currency-mask';
 export * from './forbidden-names-validator.directive';
+export * from './format';
 export * from './http-interceptor';
 export * from './memory-repository';
 export * from './password-match-validator.directive';

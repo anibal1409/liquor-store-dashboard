@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { SaleService } from 'dashboard-sdk';
+import { OrdersService } from 'dashboard-sdk';
 import {
   map,
   Observable,
@@ -14,12 +14,12 @@ import { OrderMemoryService } from '../../memory/order-memory';
 export class DeleteStudyService
 implements UseCase<number, number> {
   constructor(
-    private entityServices: SaleService,
+    private entityServices: OrdersService,
     private memoryService: OrderMemoryService,
   ) { }
 
   exec(id: number): Observable<number> {
-    return this.entityServices.salesControllerRemove(id.toString()).pipe(
+    return this.entityServices.ordersControllerRemove(id.toString()).pipe(
       map(() => 1),
       tap(() => {
         this.memoryService.delete(id);

@@ -18,11 +18,11 @@ const routes: Routes = [
       },
       {
         path: 'products',
-        loadChildren: () => import('../products/exams.module').then(m => m.ExamsModule),
+        loadChildren: () => import('../products/exams.module').then(m => m.ProductsModule),
       },
       {
         path: 'customers',
-        loadChildren: () => import('../customers/patients.module').then(m => m.PatientsModule),
+        loadChildren: () => import('../customers/patients.module').then(m => m.CustomersModule),
       },
       {
         path: 'statistics',
@@ -39,6 +39,10 @@ const routes: Routes = [
       {
         path: 'sales',
         loadChildren: () => import('../sales/sales.module').then(m => m.SalesModule),
+      },
+      {
+        path: 'orders',
+        loadChildren: () => import('../orders/orders.module').then(m => m.OrdersModule),
       },
     ],
   },

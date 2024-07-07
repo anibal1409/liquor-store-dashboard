@@ -82,6 +82,8 @@ export class FormComponent implements OnInit, OnDestroy {
   formDisabled = false;
   subArray$ = new Subscription();
 
+  readonly maxDate = new Date();
+
   constructor(
     private entityService: SalesService,
     private formBuilder: FormBuilder,
@@ -205,7 +207,7 @@ export class FormComponent implements OnInit, OnDestroy {
 
   private updateProductValue(): void {
     const stage = this.form.get('stage')?.value;
-    this.hiddenFooter = !this.showValuesAccept.includes(stage) && !this.formDisabled;
+    this.hiddenFooter = !this.showValuesAccept.includes(stage) && !this.submitDisabled;
     this.showDelete = this.showValuesAccept.includes(stage);
     const disabled = !this.showValuesAccept.includes(stage);
     const formArray = this.saleProductsArray;
@@ -216,9 +218,12 @@ export class FormComponent implements OnInit, OnDestroy {
         formArray.at(i).get('amount')?.enable();
       }
     }
-    if (!this.showValuesAccept.includes(stage) || (this.showValuesPrint.includes(stage) && this.formDisabled)) {
+    if (!this.showValuesAccept.includes(stage) || (this.showValuesPrint.includes(stage) && this.submitDisabled)) {
       this.form.disable({ emitEvent: false });
       this.formDisabled = true;
+    } else {
+      this.form.enable({ emitEvent: false });
+      this.formDisabled = false;
     }
   }
 

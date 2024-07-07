@@ -53,9 +53,10 @@ export class FormComponent implements OnInit, OnDestroy {
     status: true,
     id: 0,
     date: new Date().toDateString(),
-    customerId: 0,
-    stage: StageOrder.Pending,
-    saleProducts: [],
+    provider: '',
+    deadline: undefined,
+    stage: StageOrder.Required,
+    orderProducts: [],
     total: 0,
     note: '',
   };
@@ -65,11 +66,11 @@ export class FormComponent implements OnInit, OnDestroy {
   optionsCurrency = CustomCurrencyMaskConfig;
 
   showValuesAccept = [
-    StageOrder.Pending,
+    StageOrder.Required,
   ];
-  showValuesPrint = [
-    StageOrder.Paid,
-    StageOrder.Printed,
+  shoHiddenAccept = [
+    StageOrder.Cancelled,
+    StageOrder.Completed,
   ];
   hiddenFooter = false;
   showDelete = true;
@@ -81,6 +82,7 @@ export class FormComponent implements OnInit, OnDestroy {
 
   formDisabled = false;
   subArray$ = new Subscription();
+  readonly maxDate = new Date();
 
   constructor(
     private entityService: OrdersService,
@@ -125,16 +127,14 @@ export class FormComponent implements OnInit, OnDestroy {
             console.log(entity);
             if (entity && !this.oldFormValue.id) {
               this.oldFormValue = {
-                customerId: entity.customerId,
-                customerDocument: entity.customer?.idDocument,
-                customerName: entity.customer?.name,
-
                 date: entity.date,
+                deadline: entity.deadline,
+                provider: entity.provider,
                 stage: entity.stage,
                 id: entity.id,
 
                 total: entity.total,
-                saleProducts: entity.saleProducts.map(
+                orderProducts: entity.orderProducts?.map(
                   (saleProduct) => {
                     return {
                       id: saleProduct.id,
@@ -155,10 +155,11 @@ export class FormComponent implements OnInit, OnDestroy {
                   emitEvent: false,
                 }
               );
-              this.updateShowPrint(entity.stage);
-              this.form.get('customerDocument')?.disable();
-              for (const saleProduct of entity.saleProducts) {
-                this.addProduct(saleProduct);
+              this.updateShowPrint();
+              if (entity?.orderProducts?.length) {
+                for (const saleProduct of entity.orderProducts) {
+                  this.addProduct(saleProduct);
+                }
               }
               this.updateProductValue();
             }
@@ -168,21 +169,21 @@ export class FormComponent implements OnInit, OnDestroy {
   }
 
   clickClosed(): void {
-    this.router.navigate(['/dashboard/sales']);
+    this.router.navigate(['/dashboard/orders']);
   }
 
   private createForm(): void {
     this.form = this.formBuilder.group({
-      customerId: [null, [Validators.required]],
-      customerDocument: [null, [Validators.required]],
-      customerName: [{ value: '', disabled: true }],
+      provider: [null, [Validators.required]],
 
       date: [new Date(), [Validators.required]],
-      stage: [StageOrder.Pending, [Validators.required]],
+      deadline: [null],
+      note: [null],
+      stage: [StageOrder.Required, [Validators.required]],
       id: [0],
 
       total: [{ value: 0, disabled: true }, [Validators.required]],
-      saleProducts: this.formBuilder.array([], [Validators.required]),
+      orderProducts: this.formBuilder.array([], [Validators.required]),
     });
 
     this.sub$.add(
@@ -205,42 +206,50 @@ export class FormComponent implements OnInit, OnDestroy {
 
   private updateProductValue(): void {
     const stage = this.form.get('stage')?.value;
-    this.hiddenFooter = !this.showValuesAccept.includes(stage) && !this.formDisabled;
+    this.hiddenFooter = this.shoHiddenAccept.includes(stage) && this.submitDisabled;
     this.showDelete = this.showValuesAccept.includes(stage);
     const disabled = !this.showValuesAccept.includes(stage);
-    const formArray = this.saleProductsArray;
+    const formArray = this.orderProductsArray;
     for (let i = 0; i < formArray.length; i++) {
       if (disabled) {
-        formArray.at(i).get('amount')?.disable();
+        formArray.at(i).get('price')?.disable({emitEvent: false});
+        formArray.at(i).get('amount')?.disable({emitEvent: false});
       } else {
-        formArray.at(i).get('amount')?.enable();
+        formArray.at(i).get('price')?.enable({emitEvent: false});
+        formArray.at(i).get('amount')?.enable({emitEvent: false});
       }
     }
-    if (!this.showValuesAccept.includes(stage) || (this.showValuesPrint.includes(stage) && this.formDisabled)) {
+    if (!this.showValuesAccept.includes(stage)) {
       this.form.disable({ emitEvent: false });
       this.formDisabled = true;
+      if (stage !== StageOrder.Completed || !this.submitDisabled) {
+        this.form.get('stage')?.enable({emitEvent: false});
+      }
+    } else {
+      this.form.enable({ emitEvent: false });
+      this.formDisabled = false;
     }
   }
 
-  get saleProductsArray() {
-    return this.form.get('saleProducts') as FormArray;
+  get orderProductsArray() {
+    return this.form.get('orderProducts') as FormArray;
   }
 
-  addProduct(saleProduct?: OrderProduct) {
-    if (this.ctrlProduct.valid || saleProduct) {
+  addProduct(orderProduct?: OrderProduct) {
+    if (this.ctrlProduct.valid || orderProduct) {
       const product: ProductItemVM = this.ctrlProduct.value;
-      if (product || saleProduct) {
-        this.saleProductsArray.push(this.formBuilder.group({
-          id: [null || saleProduct?.id],
-          productId: [product?.id || saleProduct?.product?.id, Validators.required],
-          name: [{ value: product?.name || saleProduct?.product?.name, disabled: true }, Validators.required],
-          amount: [saleProduct?.amount || 1, [Validators.required, Validators.min(0.01)]],
-          price: [{ value: product?.price || saleProduct?.price, disabled: true }],
-          subtotal: [{ value: saleProduct?.subtotal || product?.price * 1 , disabled: true }],
+      if (product || orderProduct) {
+        this.orderProductsArray.push(this.formBuilder.group({
+          id: [null || orderProduct?.id],
+          productId: [product?.id || orderProduct?.product?.id, Validators.required],
+          name: [{ value: product?.name || orderProduct?.product?.name, disabled: true }, Validators.required],
+          amount: [orderProduct?.amount || 1, [Validators.required, Validators.min(0.01)]],
+          price: [{ value: product?.price || orderProduct?.price, disabled: false }, [Validators.required, Validators.min(0.01)]],
+          subtotal: [{ value: orderProduct?.subtotal || product?.price * 1 , disabled: true }],
         }));
 
         this.subArray$.unsubscribe();
-        this.saleProductsArray.controls.forEach(
+        this.orderProductsArray.controls.forEach(
           (control) => {
             this.subArray$.add(
               () => {
@@ -249,6 +258,14 @@ export class FormComponent implements OnInit, OnDestroy {
                   (amount) => {
                     form.patchValue({
                       subtotal: form.controls['price'].value * amount,
+                    }, { emitEvent: false });
+                    this.updateTotal();
+                  }
+                )
+                form.controls['price']?.valueChanges.subscribe(
+                  (price) => {
+                    form.patchValue({
+                      subtotal: form.controls['amount'].value * price,
                     }, { emitEvent: false });
                     this.updateTotal();
                   }
@@ -264,12 +281,12 @@ export class FormComponent implements OnInit, OnDestroy {
   }
 
   removeExam(index: number) {
-    this.saleProductsArray.removeAt(index);
+    this.orderProductsArray.removeAt(index);
     this.updateProducts();
   }
 
   private updateProducts(): void {
-    const productIds = this.saleProductsArray.value.map((x: any) => x.productId);
+    const productIds = this.orderProductsArray.value?.map((x: any) => x.productId);
     this.products = this.productsBase.filter((x) => !productIds.includes(x.id));
     this.updateTotal();
   }
@@ -292,11 +309,11 @@ export class FormComponent implements OnInit, OnDestroy {
           .subscribe(
             (sale) => {
               if (sale?.stage) {
-                this.updateShowPrint(sale.stage);
+                this.updateShowPrint();
               }
               this.form.reset();
               this.clickClosed();
-              this.toastService.success('¡Venta creada exitosamente!');
+              this.toastService.success('¡Pedido creado exitosamente!');
             }
           )
       );
@@ -314,40 +331,19 @@ export class FormComponent implements OnInit, OnDestroy {
           .subscribe(
             (sale) => {
               if (sale?.stage) {
-                this.updateShowPrint(sale.stage);
+                this.updateShowPrint();
               }
               this.form.reset();
               this.clickClosed();
-              this.toastService.success('¡Venta actualizada exitosamente!');
+              this.toastService.success('¡Pedido actualizado exitosamente!');
             }
           )
       );
     }
   }
 
-  updateShowPrint(stage: string): void {
-    this.showPrint = this.showValuesPrint.includes(stage as StageOrder);
-    this.form.patchValue({
-      stage,
-    }, {emitEvent: false});
-  }
-
-  findPatient(): void {
-    const customerDocument = this.form.get('customerDocument')?.value;
-    if (customerDocument && !this.id) {
-      this.sub$.add(
-        this.entityService.findPatientByDocument$(customerDocument).subscribe(
-          (customer) => {
-            if (customer?.id) {
-              this.form.patchValue({
-                customerId: customer.id,
-                customerName: customer.name,
-              });
-            }
-          }
-        )
-      );
-    }
+  updateShowPrint(): void {
+    this.showPrint = !!this.id;
   }
 
   private getProducts(): void {
@@ -363,7 +359,7 @@ export class FormComponent implements OnInit, OnDestroy {
   }
 
   private updateTotal(): void {
-    const total: number = this.saleProductsArray
+    const total: number = this.orderProductsArray
       .getRawValue()
       .reduce(
         (accumulator: number, currentValue: OrderProduct) => accumulator + +currentValue.subtotal, 0,
@@ -380,17 +376,15 @@ export class FormComponent implements OnInit, OnDestroy {
 
   generateReportSale(): void {
     this.sub$.add(
-      this.entityService.generateReportSale({
+      this.entityService.generateReportOrder$({
         id: this.id
       }).subscribe(
         (report) => {
-          console.log(report);
           const link = document.createElement('a');
           link.href = report?.reportUrl;
           link.target = '_black';
           link.download = report?.name;
           link.click();
-          
         }
       )
     );

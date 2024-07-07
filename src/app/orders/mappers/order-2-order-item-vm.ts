@@ -1,8 +1,8 @@
-import { customerToCustomerItemVM } from '../../customers';
 import {
-  OrderItemVM,
   ORDER_EDIT,
   ORDER_NOT_EDIT,
+  OrderItemVM,
+  OrderProduct,
   OrderVM,
 } from '../models';
 import {
@@ -11,18 +11,15 @@ import {
 } from '../models/stage';
 import { order2OrderVM } from './order-2-order-vm';
 
-export function order2OrderItemVM(sale: any): OrderItemVM {
-  const studyVM: OrderVM = order2OrderVM(sale);
-  const customer = customerToCustomerItemVM(sale?.customer);
+export function order2OrderItemVM(order: any): OrderItemVM {
+  const orderVM: OrderVM = order2OrderVM(order);
   return { 
-    ...studyVM,
-    customer: customer,
-    patientName: customer?.name,
-    counterExams: studyVM?.saleProducts?.length || 0,
-    stageText: STAGE_STUDY_VALUE[sale?.stage]?.name,
-    statusText: sale?.status ? 'Activo' : 'Inactivo',
+    ...orderVM,
+    counterProducts: orderVM?.orderProducts?.reduce((accumulator: number, currentValue: OrderProduct) => accumulator + +currentValue.amount, 0,) || 0,
+    stageText: STAGE_STUDY_VALUE[order?.stage]?.name,
+    statusText: order?.status ? 'Activo' : 'Inactivo',
     options: { 
-      options: STAGES_ACTIVES.includes(sale?.stage) ? ORDER_EDIT : ORDER_NOT_EDIT ,
+      options: STAGES_ACTIVES.includes(order?.stage) ? ORDER_EDIT : ORDER_NOT_EDIT ,
     }
   }; 
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { SaleService } from 'dashboard-sdk';
+import { OrdersService } from 'dashboard-sdk';
 import {
   map,
   Observable,
@@ -23,12 +23,12 @@ export class GetStudiesService
   implements UseCase<Array<OrderItemVM> | null, BaseQuery> {
 
   constructor(
-    private entityServices: SaleService,
+    private entityServices: OrdersService,
     private memoryService: OrderMemoryService,
   ) { }
 
   exec(data: OrderBaseQuery = {}): Observable<Array<OrderItemVM>> {
-    return this.entityServices.salesControllerFindAll()
+    return this.entityServices.ordersControllerFindAll()
       .pipe(
         map((entities: any) => entities.map(order2OrderItemVM)),
         tap((entity) => {

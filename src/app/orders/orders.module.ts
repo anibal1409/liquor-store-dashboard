@@ -24,8 +24,7 @@ import {
   StateModule,
   TableModule,
 } from '../common';
-import { PatientsModule } from '../customers';
-import { ExamsModule } from '../products';
+import { ProductsModule } from '../products';
 import { FormComponent } from './form/form.component';
 import { OrderMemoryService } from './memory';
 import { OrdersRoutingModule } from './orders-routing.module';
@@ -38,7 +37,6 @@ import {
   FindStudyService,
   GetStudiesService,
   ReportSaleService,
-  ReportSalesService,
   UpdateStudyService,
 } from './use-cases';
 
@@ -64,10 +62,9 @@ import {
     StateModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    PatientsModule,
     MatDividerModule,
     MatCheckboxModule,
-    ExamsModule,
+    ProductsModule,
     CurrencyMaskModule,
     SafeModule,
   ],
@@ -81,7 +78,6 @@ import {
     FindStudyService,
     CurrencyPipe,
     ReportSaleService,
-    ReportSalesService,
   ],
 })
 export class OrdersModule { }

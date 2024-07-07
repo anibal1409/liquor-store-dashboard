@@ -87,15 +87,15 @@ export class ReportComponent  implements OnInit, OnDestroy {
   generate(): void {
     if (!this.submitDisabled) {
       const values = this.form.value;
-      this.sub$.add(
-        this.salesService
-          .generateReportSales({
-            ...values,
-          })
-          .subscribe((src) => {
-            this.pdfSrc = src?.reportUrl;
-          })
-      );
+      // this.sub$.add(
+      //   this.salesService
+      //     .generateReportSales({
+      //       ...values,
+      //     })
+      //     .subscribe((src) => {
+      //       this.pdfSrc = src?.reportUrl;
+      //     })
+      // );
     }
   }
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { SaleService } from 'dashboard-sdk';
+import { OrdersService } from 'dashboard-sdk';
 import { Observable } from 'rxjs';
 
 import { BaseQuery } from '../../../common/memory-repository';
@@ -9,11 +9,11 @@ import { BaseQuery } from '../../../common/memory-repository';
 export class ReportSaleService {
 
   constructor(
-    private entityServices: SaleService
+    private entityServices: OrdersService
   ) { }
 
   exec(data: BaseQuery): Observable<any> {
     return this.entityServices
-    .salesControllerGeneratePdf(data?.id?.toString() || '0');
+    .ordersControllerGeneratePdf(data?.id?.toString() || '0');
   }
 }

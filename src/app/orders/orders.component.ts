@@ -12,6 +12,7 @@ import { Subscription } from 'rxjs';
 
 import {
   ConfirmModalComponent,
+  formatNumberToDigits,
   OptionAction,
   StateService,
   TableDataVM,
@@ -32,14 +33,19 @@ export class OrdersComponent implements OnInit, OnDestroy {
   data: TableDataVM = {
     headers: [
       {
+        columnDef: 'id',
+        header: 'Código',
+        cell: (element: { [key: string]: string }) => `${formatNumberToDigits(+element['id'])}`,
+      },
+      {
         columnDef: 'date',
-        header: 'Fecha',
+        header: 'Solicitado en',
         cell: (element: { [key: string]: string }) => `${moment(element['date']).format('DD/MM/YYYY HH:mm')}`,
       },
       {
-        columnDef: 'patientName',
-        header: 'Cliente',
-        cell: (element: { [key: string]: string }) => `${element['patientName']}`,
+        columnDef: 'provider',
+        header: 'Proveedor',
+        cell: (element: { [key: string]: string }) => `${element['provider']}`,
       },
       {
         columnDef: 'stageText',
@@ -47,9 +53,9 @@ export class OrdersComponent implements OnInit, OnDestroy {
         cell: (element: { [key: string]: string }) => `${element['stageText']}`,
       },
       {
-        columnDef: 'counterExams',
+        columnDef: 'counterProducts',
         header: 'N. de Productos',
-        cell: (element: { [key: string]: string }) => `${element['counterExams']}`,
+        cell: (element: { [key: string]: string }) => `${element['counterProducts']}`,
       },
       {
         columnDef: 'total',
@@ -102,7 +108,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
   clickAction(option: OptionAction) {
     switch (option.option.value) {
       case RowActionOrder.update:
-        this.router.navigate(['/dashboard/sales/form'], {
+        this.router.navigate(['/dashboard/orders/form'], {
           queryParams: {
             id: option.data['id'],
           }
@@ -118,8 +124,8 @@ export class OrdersComponent implements OnInit, OnDestroy {
     const dialogRef = this.matDialog.open(ConfirmModalComponent, {
       data: {
         message: {
-          title: 'Eliminar venta',
-          body: `¿Está seguro que desea eliminar la venta de <strong>${item?.patientName}</strong>?`,
+          title: 'Eliminar pedido',
+          body: `¿Está seguro que desea eliminar el pedido a <strong>${item?.provider}</strong>?`,
         },
       },
       hasBackdrop: true,
@@ -132,9 +138,5 @@ export class OrdersComponent implements OnInit, OnDestroy {
         this.entityService.delete(item?.id || 0);
       }
     });
-  }
-
-  goReport(): void {
-    this.router.navigate(['/dashboard/sales/report']);
   }
 }

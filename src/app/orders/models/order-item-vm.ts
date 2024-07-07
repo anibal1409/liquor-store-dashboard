@@ -4,8 +4,7 @@ import { RowActionOrder } from './row-action';
 
 export interface OrderItemVM extends OrderVM { 
   statusText?: string;
-  patientName?: string;
-  counterExams?: number;
+  counterProducts?: number;
   stageText?: string;
   options?: { 
     options?: Array<RowOptionVM<RowActionOrder>>; 

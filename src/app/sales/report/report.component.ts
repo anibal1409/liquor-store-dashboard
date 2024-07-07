@@ -44,6 +44,7 @@ export class ReportComponent  implements OnInit, OnDestroy {
   ];
 
   private sub$ = new Subscription();
+  readonly maxDate = new Date();
 
   constructor(
     private router: Router,

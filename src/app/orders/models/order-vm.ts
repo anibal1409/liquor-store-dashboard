@@ -1,16 +1,15 @@
-import { CustomerItemVM } from '../../customers/models';
 import { ProductVM } from '../../products';
 
 export interface OrderVM {
   id?: number;
   stage: string;
   date: string;
+  deadline?: string;
   note?: string;
   total: number;
-  customerId: number;
-  saleProducts: Array<OrderProduct>;
+  provider: string;
+  orderProducts: Array<OrderProduct>;
   status: boolean;
-  customer?: CustomerItemVM;
 }
 
 export interface OrderProduct {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { SaleService } from 'dashboard-sdk';
+import { OrdersService } from 'dashboard-sdk';
 import {
   map,
   Observable,
@@ -18,12 +18,12 @@ export class FindStudyService
   implements UseCase<OrderItemVM | null, BaseQuery>
 {
   constructor(
-    private entityServices: SaleService
+    private entityServices: OrdersService
   ) { }
 
   exec(data: BaseQuery): Observable<OrderItemVM> {
     return this.entityServices
-    .salesControllerFindOne(data?.id?.toString() || '0')
+    .ordersControllerFindOne(data?.id?.toString() || '0')
     .pipe(map(order2OrderVM));
   }
 }

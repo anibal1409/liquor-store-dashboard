@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { SaleService } from 'dashboard-sdk';
+import { OrdersService } from 'dashboard-sdk';
 import {
   map,
   Observable,
@@ -18,7 +18,7 @@ export class UpdateStudyService
   implements UseCase<OrderItemVM | null, OrderVM>
 {
   constructor(
-    private entityServices: SaleService,
+    private entityServices: OrdersService,
     private memoryService: OrderMemoryService,
   ) { }
 
@@ -26,15 +26,16 @@ export class UpdateStudyService
     console.log(entitySave);
     
     return this.entityServices
-      .salesControllerUpdate(
+      .ordersControllerUpdate(
         entitySave.id?.toString() || '0',
         {
           date: entitySave.date,
           note: entitySave.note,
           total: +entitySave.total,
-          customer: { id: entitySave.customerId },
+          provider: entitySave.provider,
+          deadline: entitySave.deadline,
           stage: entitySave.stage,
-          saleProducts: entitySave.saleProducts.map((x) => ({
+          orderProducts: entitySave.orderProducts.map((x) => ({
             id: x.id,
             product: { id: x.productId },
             price: +x.price,

@@ -3,6 +3,7 @@ import {
   SALE_EDIT,
   SALE_NOT_EDIT,
   SaleItemVM,
+  SaleProduct,
   SaleVM,
 } from '../models';
 import {
@@ -17,8 +18,8 @@ export function sale2SaleItemVM(sale: any): SaleItemVM {
   return { 
     ...studyVM,
     customer: customer,
-    patientName: customer?.name,
-    counterExams: studyVM?.saleProducts?.length || 0,
+    customerName: customer?.name,
+    counterProducts: studyVM?.saleProducts?.reduce((accumulator: number, currentValue: SaleProduct) => accumulator + +currentValue.amount, 0,) || 0,
     stageText: STAGE_STUDY_VALUE[sale?.stage]?.name,
     statusText: sale?.status ? 'Activo' : 'Inactivo',
     options: { 

@@ -126,7 +126,7 @@ export class FormComponent implements OnInit, OnDestroy {
       description: [null, [Validators.maxLength(200)]],
       id: [0],
       status: [true, [Validators.required]],
-      price: [null, [Validators.required, Validators.min(1)]],
+      price: [null, [Validators.required, Validators.min(0.01)]],
       category: [null, [Validators.required]],
       stock: [null, [Validators.required, Validators.min(1)]],
     });

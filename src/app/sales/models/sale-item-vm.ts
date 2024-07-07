@@ -4,8 +4,8 @@ import { SaleVM } from './sale-vm';
 
 export interface SaleItemVM extends SaleVM { 
   statusText?: string;
-  patientName?: string;
-  counterExams?: number;
+  customerName?: string;
+  counterProducts?: number;
   stageText?: string;
   options?: { 
     options?: Array<RowOptionVM<RowActionSale>>; 
