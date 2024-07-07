@@ -9,11 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { SaleDto } from './sale-dto';
 
 
 export interface MonthRespondeDto { 
-    category: object;
-    sales: Array<SaleDto>;
+    categories: object;
+    products: object;
 }
 

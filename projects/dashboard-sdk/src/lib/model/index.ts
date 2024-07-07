@@ -22,7 +22,6 @@ export * from './product-responde-dto';
 export * from './recovery-password-dto';
 export * from './recovery-password-response-dto';
 export * from './reports-response-dto';
-export * from './sale-dto';
 export * from './sale-responde-dto';
 export * from './update-category-dto';
 export * from './update-customer-dto';
