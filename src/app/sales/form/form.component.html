@@ -234,8 +234,8 @@
   >
     <mat-icon>print</mat-icon>
   </button>
-
-  <ng-container *ngIf="!hiddenFooter"
+  
+  <ng-container *ngIf="!hiddenFooter || !submitDisabled"
   >
     <button
       mat-button

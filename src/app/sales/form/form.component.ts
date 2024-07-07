@@ -67,6 +67,11 @@ export class FormComponent implements OnInit, OnDestroy {
   showValuesAccept = [
     StageSale.Pending,
   ];
+  shoHiddenAccept = [
+    StageSale.Cancelled,
+    StageSale.Paid,
+    StageSale.Printed,
+  ];
   showValuesPrint = [
     StageSale.Paid,
     StageSale.Printed,
@@ -207,7 +212,7 @@ export class FormComponent implements OnInit, OnDestroy {
 
   private updateProductValue(): void {
     const stage = this.form.get('stage')?.value;
-    this.hiddenFooter = !this.showValuesAccept.includes(stage) && !this.submitDisabled;
+    this.hiddenFooter = this.shoHiddenAccept.includes(stage) && !this.submitDisabled;
     this.showDelete = this.showValuesAccept.includes(stage);
     const disabled = !this.showValuesAccept.includes(stage);
     const formArray = this.saleProductsArray;
@@ -221,10 +226,14 @@ export class FormComponent implements OnInit, OnDestroy {
     if (!this.showValuesAccept.includes(stage) || (this.showValuesPrint.includes(stage) && this.submitDisabled)) {
       this.form.disable({ emitEvent: false });
       this.formDisabled = true;
+      if (!this.submitDisabled) {
+        this.form.get('stage')?.enable({emitEvent: false});
+      }
     } else {
       this.form.enable({ emitEvent: false });
       this.formDisabled = false;
     }
+    this.form.get('customerName')?.disable({ emitEvent: false });
   }
 
   get saleProductsArray() {
