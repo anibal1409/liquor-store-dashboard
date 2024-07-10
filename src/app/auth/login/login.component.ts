@@ -8,10 +8,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import {
-  ActivatedRoute,
-  Router,
-} from '@angular/router';
+import { Router } from '@angular/router';
 
 import {
   finalize,
@@ -36,7 +33,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private activatedRoute: ActivatedRoute,
     private stateService: StateService,
     private loginService: LoginService,
   ) {}
@@ -79,6 +75,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.loginService.exec(email, password)
       .pipe(
         finalize(() => {
+          this.loading = false;
           this.stateService.setLoading(false);
         }
         )
