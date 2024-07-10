@@ -1,6 +1,7 @@
 import { registerLocaleData } from '@angular/common';
 import es from '@angular/common/locales/es';
 import {
+  ErrorHandler,
   forwardRef,
   LOCALE_ID,
   NgModule,
@@ -14,7 +15,10 @@ import {
   ApiModule,
   Configuration,
 } from 'dashboard-sdk';
-import { ErrorHandlerModule } from 'error-handler';
+import {
+  ErrorHandlerModule,
+  ErrorHandlerService,
+} from 'error-handler';
 import { CurrencyMaskModule } from 'ng2-currency-mask';
 import {
   IConfig,
@@ -91,6 +95,10 @@ const maskConfig: Partial<IConfig> = {
     { provide: LOCALE_ID, useValue: 'es-ES' },
     { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
     provideEnvironmentNgxMask(maskConfig),
+    {
+      provide: ErrorHandler,
+      useExisting: forwardRef(() => ErrorHandlerService),
+    },
   ],
   bootstrap: [AppComponent]
 })
