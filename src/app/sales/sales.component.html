@@ -8,7 +8,7 @@
         emptySearchMessage="Ningún registro coincide con la busqueda"
         (clickOption)="clickAction($event)"
       >
-        <div filters>
+        <div *ngIf="showReport" filters>
           <button
             mat-raised-button
             type="button"

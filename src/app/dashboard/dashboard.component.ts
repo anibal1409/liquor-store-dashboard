@@ -64,8 +64,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
       title: 'Mi Perfil',
     },
     {
-      path: 'dashboard/studies/form',
+      path: '/dashboard/sales/form',
       title: 'Formulario de venta',
+    },
+    {
+      path: '/dashboard/orders/form',
+      title: 'Formulario de pedido',
     }
   ];
 
@@ -109,7 +113,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         }
       })
     );
-    // this.user = this.userStateService.getUser() as any;
+    this.user = this.userStateService.getUser() as any;
     console.log(this.user);
     this.sub$.add(
       this.userStateService.getUser$().subscribe((user) => {
@@ -122,8 +126,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
       )
     );
     const role = this.userStateService.getRole();
-    if (role || true) {
-      this.optionList = MENU.filter((item) => (item.permissions.includes(role as any) || true))
+    if (role) {
+      this.optionList = MENU.filter((item) => (item.permissions.includes(role as any)))
       .sort((a, b) => {
         let sort = 0;
         if (a.name > b.name) {

@@ -17,7 +17,9 @@ import {
   StateService,
   TableDataVM,
   TableService,
+  UserStateService,
 } from '../common';
+import { UserRole } from '../users/model';
 import {
   RowActionSale,
   SaleItemVM,
@@ -63,27 +65,29 @@ export class SalesComponent implements OnInit, OnDestroy {
   };
 
   loading = false;
+  showReport = false;
 
   private sub$ = new Subscription();
   constructor(
     private tableService: TableService,
-    private usersService: SalesService,
+    private entityService: SalesService,
     private stateService: StateService,
     private matDialog: MatDialog,
     private router: Router,
     private currency: CurrencyPipe,
+    private userStateService: UserStateService,
   ) {}
 
   ngOnInit(): void {
     this.sub$.add(
-      this.usersService.getLoading$().subscribe((loading) => {
+      this.entityService.getLoading$().subscribe((loading) => {
         this.loading = loading;
         this.stateService.setLoading(loading);
       })
     );
     
     this.sub$.add(
-      this.usersService.getData$().subscribe((data) => {
+      this.entityService.getData$().subscribe((data) => {
         console.log(data);
         this.data = {
           ...this.data,
@@ -93,7 +97,8 @@ export class SalesComponent implements OnInit, OnDestroy {
         this.tableService.setData(this.data);
       })
     );
-    this.usersService.get({});
+    this.entityService.get({});
+    this.showReport = this.userStateService.getRole() !== UserRole.SalesAdvisor;
   }
 
   ngOnDestroy(): void {
@@ -130,7 +135,7 @@ export class SalesComponent implements OnInit, OnDestroy {
     dialogRef.componentInstance.closed.subscribe((res) => {
       dialogRef.close();
       if (res) {
-        this.usersService.delete(item?.id || 0);
+        this.entityService.delete(item?.id || 0);
       }
     });
   }
