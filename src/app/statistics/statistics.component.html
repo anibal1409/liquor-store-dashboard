@@ -53,37 +53,44 @@
 </mat-form-field>
 
 <div class="content-cards d-flex align-items-center justify-content-center">
-  
-  <mat-card class="content-statistics">
-    <mat-card-header>
-      <mat-card-title>Categorías más vendidas</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <ngx-charts-pie-chart
-        [results]="typesExam"
-        [labels]="true"
-        [view]="[0, 400]"
-      ></ngx-charts-pie-chart>
-    </mat-card-content>
-  </mat-card>
-  
-  <mat-card class="content-statistics">
-    <mat-card-header>
-      <mat-card-title>Productos más vendidos</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <ngx-charts-bar-vertical
-        [results]="exams"
-        [xAxisLabel]="'Tipo de exámen'"
-        [yAxisLabel]="''"
-        [showXAxisLabel]="true"
-        [showYAxisLabel]="true"
-        [xAxis]="true"
-        [yAxis]="true"
-        [view]="[0, 400]"
-      ></ngx-charts-bar-vertical>
-    </mat-card-content>
-  </mat-card>
+
+  <ng-container *ngIf="showGraphs; else empty">
+    <mat-card class="content-statistics">
+      <mat-card-header>
+        <mat-card-title>Categorías más vendidas</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <ngx-charts-pie-chart
+          [results]="typesExam"
+          [labels]="true"
+          [view]="[0, 400]"
+        ></ngx-charts-pie-chart>
+      </mat-card-content>
+    </mat-card>
+    
+    <mat-card class="content-statistics">
+      <mat-card-header>
+        <mat-card-title>Productos más vendidos</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <ngx-charts-bar-vertical
+          [results]="exams"
+          [xAxisLabel]="'Tipo de exámen'"
+          [yAxisLabel]="''"
+          [showXAxisLabel]="true"
+          [showYAxisLabel]="true"
+          [xAxis]="true"
+          [yAxis]="true"
+          [view]="[0, 400]"
+        ></ngx-charts-bar-vertical>
+      </mat-card-content>
+    </mat-card>
+  </ng-container>
+  <ng-template #empty>
+    <div class="container-empty">
+      No hay datos para mostrar en el mes indicado.
+    </div>
+  </ng-template>
 </div>
 
 

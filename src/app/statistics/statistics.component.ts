@@ -85,6 +85,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
       value: 11,
     },
   ];
+  showGraphs = false;
   
   constructor(
     private entityService: StatisticsService,
@@ -127,7 +128,8 @@ export class StatisticsComponent implements OnInit, OnDestroy {
         end: endMonth,
       }).subscribe((statistics) => {
         this.exams = statistics.products;
-        this.typesExam = statistics.categories;        
+        this.typesExam = statistics.categories;  
+        this.showGraphs = !!statistics.categories?.length && !!statistics.products?.length;         
       })
     );
   }
