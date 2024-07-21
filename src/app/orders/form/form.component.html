@@ -89,9 +89,11 @@
             *ngFor="let product of products"
             [value]="product"
           >
+          <mat-icon>
+            <img src="assets/icons/beer.svg" alt="" >
+          </mat-icon>
           {{ product.name }}
            -
-            <mat-icon>move_to_inbox</mat-icon>
             {{ product.stock }} Unidad(es)
           
           </mat-option

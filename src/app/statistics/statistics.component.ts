@@ -127,7 +127,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
         start: startMonth,
         end: endMonth,
       }).subscribe((statistics) => {
-        this.exams = statistics.products.slice(0, 9);
+        this.exams = statistics.products.slice(0, 10);
         this.typesExam = statistics.categories;  
         this.showGraphs = !!statistics.categories?.length && !!statistics.products?.length;         
       })

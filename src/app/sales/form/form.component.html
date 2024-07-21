@@ -18,6 +18,7 @@
           (keyup.enter)="findPatient()"
         />
         <mat-icon matSuffix (click)="findPatient()">search</mat-icon>
+        <mat-icon matSuffix (click)="addCustomer()">add_circle</mat-icon>
         <mat-error *ngIf="form.controls['customerDocument'].hasError('required')"
           >Campo requerido</mat-error
         >
@@ -95,6 +96,9 @@
             *ngFor="let product of products"
             [value]="product"
           >
+          <mat-icon>
+            <img src="assets/icons/beer.svg" alt="" >
+          </mat-icon>
             {{ product.name }}
           </mat-option
           >
@@ -105,7 +109,9 @@
       </mat-form-field>
     </div>
     <div class="col-md-1 col-12 d-flex justify-content-end">
-      <button type="button" mat-button (click)="addProduct()">Agregar</button>
+      <button type="button" mat-button (click)="addProduct()">
+        <mat-icon class="icon-add" matSuffix color="primary">add_circle</mat-icon>
+      </button>
     </div>
     <div class="col-md-5 col-12">
     </div>

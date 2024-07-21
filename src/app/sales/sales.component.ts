@@ -117,6 +117,9 @@ export class SalesComponent implements OnInit, OnDestroy {
       case RowActionSale.delete:
         this.showConfirm(option.data as any);
         break;
+      case RowActionSale.print:
+        this.printSale(option.data as any);
+        break;
     }
   }
 
@@ -142,5 +145,15 @@ export class SalesComponent implements OnInit, OnDestroy {
 
   goReport(): void {
     this.router.navigate(['/dashboard/sales/report']);
+  }
+
+  printSale(item: SaleItemVM): void {
+    this.sub$.add(
+      this.entityService.printSale(item.id || 0).subscribe(
+        (report) => {
+          this.entityService.openPDF(report);
+        }
+      )
+    );
   }
 }

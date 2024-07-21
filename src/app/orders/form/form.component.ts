@@ -205,29 +205,35 @@ export class FormComponent implements OnInit, OnDestroy {
   }
 
   private updateProductValue(): void {
-    const stage = this.form.get('stage')?.value;
-    this.hiddenFooter = this.shoHiddenAccept.includes(stage) && this.submitDisabled;
-    this.showDelete = this.showValuesAccept.includes(stage);
-    const disabled = !this.showValuesAccept.includes(stage);
-    const formArray = this.orderProductsArray;
-    for (let i = 0; i < formArray.length; i++) {
-      if (disabled) {
-        formArray.at(i).get('price')?.disable({emitEvent: false});
-        formArray.at(i).get('amount')?.disable({emitEvent: false});
+    if (this.id) {
+      const stage = this.form.get('stage')?.value;
+      this.hiddenFooter = this.shoHiddenAccept.includes(stage) && this.submitDisabled;
+      this.showDelete = this.showValuesAccept.includes(stage);
+      const disabled = !this.showValuesAccept.includes(stage);
+      const formArray = this.orderProductsArray;
+      for (let i = 0; i < formArray.length; i++) {
+        if (disabled) {
+          formArray.at(i).get('price')?.disable({emitEvent: false});
+          formArray.at(i).get('amount')?.disable({emitEvent: false});
+        } else {
+          formArray.at(i).get('price')?.enable({emitEvent: false});
+          formArray.at(i).get('amount')?.enable({emitEvent: false});
+        }
+      }
+      if (!this.showValuesAccept.includes(stage)) {
+        this.form.disable({ emitEvent: false });
+        this.formDisabled = true;
+        if (stage !== StageOrder.Completed || !this.submitDisabled) {
+          this.form.get('stage')?.enable({emitEvent: false});
+        }
       } else {
-        formArray.at(i).get('price')?.enable({emitEvent: false});
-        formArray.at(i).get('amount')?.enable({emitEvent: false});
+        this.form?.get('provider')?.enable({emitEvent: false});
+        this.form?.get('date')?.enable({emitEvent: false});
+        this.form?.get('stage')?.enable({emitEvent: false});
+        this.form?.get('deadline')?.enable({emitEvent: false});
+        this.form?.get('note')?.enable({emitEvent: false});
+        this.formDisabled = false;
       }
-    }
-    if (!this.showValuesAccept.includes(stage)) {
-      this.form.disable({ emitEvent: false });
-      this.formDisabled = true;
-      if (stage !== StageOrder.Completed || !this.submitDisabled) {
-        this.form.get('stage')?.enable({emitEvent: false});
-      }
-    } else {
-      this.form.enable({ emitEvent: false });
-      this.formDisabled = false;
     }
   }
 

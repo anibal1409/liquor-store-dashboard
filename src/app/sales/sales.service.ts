@@ -78,4 +78,18 @@ export class SalesService extends ListComponentService<SaleItemVM, SaleBaseQuery
       )
     );
   }
+
+  printSale(id: number): Observable<any> {
+    return this.generateReportSale({
+      id
+    });
+  }
+
+  openPDF(report: any): void {
+    const link = document.createElement('a');
+    link.href = report?.reportUrl;
+    link.target = '_black';
+    link.download = report?.name;
+    link.click();
+  }
 }

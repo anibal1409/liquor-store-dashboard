@@ -1,6 +1,7 @@
 export enum RowActionSale {
   update = 'update',
   delete = 'delete',
+  print = 'print',
 }
 
 export const SALE_EDIT = [
@@ -22,4 +23,10 @@ export const SALE_NOT_EDIT = [
     value: RowActionSale.update,
     icon: 'remove_red_eye'
   },
+  {
+    name: 'Imprimir',
+    value: RowActionSale.print,
+    icon: 'print'
+  },
 ];
+

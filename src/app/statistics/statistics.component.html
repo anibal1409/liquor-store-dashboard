@@ -1,26 +1,5 @@
 
 <div class="content-cards d-flex align-items-center justify-content-start">
-  <mat-card>
-    <mat-card-header class="p-3">
-      <mat-card-title>Ventas realizadas en el mes</mat-card-title>
-      <mat-card-subtitle>
-        {{
-          statistics.sales
-        }}
-      </mat-card-subtitle>
-    </mat-card-header>
-  </mat-card>
-
-  <mat-card>
-    <mat-card-header class="p-3">
-      <mat-card-title>Pedidos realizadas en el mes</mat-card-title>
-      <mat-card-subtitle>
-        {{
-          statistics.orders
-        }}
-      </mat-card-subtitle>
-    </mat-card-header>
-  </mat-card>
 
   <mat-card>
     <mat-card-header class="p-3">
@@ -39,6 +18,28 @@
       <mat-card-subtitle>
         {{
           statistics.customers
+        }}
+      </mat-card-subtitle>
+    </mat-card-header>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-header class="p-3">
+      <mat-card-title>Ventas realizadas en el mes</mat-card-title>
+      <mat-card-subtitle>
+        {{
+          statistics.sales
+        }}
+      </mat-card-subtitle>
+    </mat-card-header>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-header class="p-3">
+      <mat-card-title>Pedidos realizadas en el mes</mat-card-title>
+      <mat-card-subtitle>
+        {{
+          statistics.orders
         }}
       </mat-card-subtitle>
     </mat-card-header>
@@ -75,8 +76,8 @@
       <mat-card-content>
         <ngx-charts-bar-vertical
           [results]="exams"
-          [xAxisLabel]="'Tipo de exámen'"
-          [yAxisLabel]="''"
+          [xAxisLabel]="'Productos'"
+          [yAxisLabel]="'Ventas'"
           [showXAxisLabel]="true"
           [showYAxisLabel]="true"
           [xAxis]="true"
