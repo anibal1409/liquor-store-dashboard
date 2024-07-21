@@ -1,6 +1,6 @@
 /**
- * MI PROFE
- * The MI PROFE-API description
+ * KTM
+ * The KTM-API description
  *
  * The version of the OpenAPI document: 1.0
  * 
@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { CreateSaleServiceDto } from './create-sale-service-dto';
 import { IdCreateEntity } from './id-create-entity';
 import { CreateSaleProductDto } from './create-sale-product-dto';
 
@@ -20,5 +21,6 @@ export interface UpdateSaleDto {
     total?: number;
     customer?: IdCreateEntity;
     saleProducts?: Array<CreateSaleProductDto>;
+    saleServices?: Array<CreateSaleServiceDto>;
 }
 

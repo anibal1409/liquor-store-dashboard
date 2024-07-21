@@ -11,13 +11,13 @@
  */
 
 
-export interface LoginUserResponseDto { 
-    email: string;
+export interface ServiceRespondeDto { 
     id: number;
-    lastName: string;
-    firstName: string;
-    idDocument: string;
-    role: string;
-    loginStamp: number;
+    status: boolean;
+    name: string;
+    description?: string;
+    path?: string;
+    price: number;
+    category: object;
 }
 

@@ -114,7 +114,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
       })
     );
     this.user = this.userStateService.getUser() as any;
-    console.log(this.user);
     this.sub$.add(
       this.userStateService.getUser$().subscribe((user) => {
         if (user) {

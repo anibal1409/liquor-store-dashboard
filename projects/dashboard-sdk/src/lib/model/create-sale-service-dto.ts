@@ -9,15 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { IdCreateEntity } from './id-create-entity';
 
 
-export interface LoginUserResponseDto { 
-    email: string;
-    id: number;
-    lastName: string;
-    firstName: string;
-    idDocument: string;
-    role: string;
-    loginStamp: number;
+export interface CreateSaleServiceDto { 
+    id?: number;
+    amount: number;
+    price: number;
+    subtotal: number;
+    service: IdCreateEntity;
 }
 
