@@ -1,46 +1,94 @@
 
 <div class="content-cards d-flex align-items-center justify-content-start">
 
-  <mat-card>
+  <mat-card class="card-statistics">
     <mat-card-header class="p-3">
-      <mat-card-title>Productos ofrecidos</mat-card-title>
+      <mat-card-title class="d-flex align-items-center">
+        Productos
+        <mat-icon>
+          <img src="assets/icons/beer-white.svg" alt="" >
+        </mat-icon>
+      </mat-card-title>
       <mat-card-subtitle>
-        {{
-          statistics.products
-        }}
+        <div class="d-flex justify-content-between mt-3 content-data">
+          <span>
+            {{
+              statistics.products
+            }}
+          </span>
+          <span class="recovery-link" routerLink="/dashboard/products">
+            Ver más
+          </span>
+        </div>
+      </mat-card-subtitle>
+    </mat-card-header>
+  </mat-card>
+  
+  <mat-card class="card-statistics">
+    <mat-card-header class="p-3">
+      <mat-card-title class="d-flex align-items-center">
+        Clientes
+        <mat-icon>
+          supervisor_account
+        </mat-icon>
+      </mat-card-title>
+      <mat-card-subtitle>
+        <div class="d-flex justify-content-between mt-3 content-data">
+          <span>
+            {{
+              statistics.customers
+            }}
+          </span>
+          <span class="recovery-link" routerLink="/dashboard/customers">
+            Ver más
+          </span>
+        </div>
       </mat-card-subtitle>
     </mat-card-header>
   </mat-card>
 
-  <mat-card>
+  <mat-card class="card-statistics">
     <mat-card-header class="p-3">
-      <mat-card-title>Clientes registrados</mat-card-title>
+      <mat-card-title class="d-flex align-items-center">
+        Ventas
+        <mat-icon>
+          shopping_cart
+        </mat-icon>
+      </mat-card-title>
       <mat-card-subtitle>
-        {{
-          statistics.customers
-        }}
+        <div class="d-flex justify-content-between mt-3 content-data">
+          <span>
+            {{
+              statistics.sales
+            }}
+          </span>
+          <span class="recovery-link" routerLink="/dashboard/sales">
+            Ver más
+          </span>
+        </div>
       </mat-card-subtitle>
     </mat-card-header>
   </mat-card>
 
-  <mat-card>
+  <mat-card class="card-statistics">
     <mat-card-header class="p-3">
-      <mat-card-title>Ventas realizadas en el mes</mat-card-title>
+      <mat-card-title class="d-flex align-items-center">
+        Pedidos
+        <mat-icon>
+          list_alt
+        </mat-icon>
+      </mat-card-title>
       <mat-card-subtitle>
-        {{
-          statistics.sales
-        }}
-      </mat-card-subtitle>
-    </mat-card-header>
-  </mat-card>
-
-  <mat-card>
-    <mat-card-header class="p-3">
-      <mat-card-title>Pedidos realizadas en el mes</mat-card-title>
-      <mat-card-subtitle>
-        {{
-          statistics.orders
-        }}
+        <div class="d-flex justify-content-between mt-3 content-data">
+          <span>
+            {{
+              statistics.orders
+            }}
+          </span>
+          <span class="recovery-link" routerLink="/dashboard/orders">
+            Ver más
+          </span>
+        </div>
       </mat-card-subtitle>
     </mat-card-header>
   </mat-card>

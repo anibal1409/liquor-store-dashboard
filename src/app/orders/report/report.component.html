@@ -14,17 +14,17 @@
     <mat-form-field>
       <mat-label>Rango de Fecha</mat-label>
       <mat-date-range-input [rangePicker]="picker">
-        <input matStartDate formControlName="start" placeholder="Start date" readonly>
-        <input matEndDate formControlName="end" placeholder="End date" readonly>
+        <input matStartDate formControlName="start" placeholder="Fecha inicial" readonly>
+        <input matEndDate formControlName="end" placeholder="Fecha final" readonly>
       </mat-date-range-input>
       <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-date-range-picker #picker></mat-date-range-picker>
 
       <!-- @if (range.controls.start.hasError('matStartDateInvalid')) {
-      <mat-error>Invalid start date</mat-error>
+      <mat-error>Invalid Fecha inicial</mat-error>
       }
       @if (range.controls.end.hasError('matEndDateInvalid')) {
-      <mat-error>Invalid end date</mat-error>
+      <mat-error>Invalid Fecha final</mat-error>
       } -->
     </mat-form-field>
   </div>

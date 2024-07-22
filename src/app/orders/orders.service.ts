@@ -56,4 +56,18 @@ export class OrdersService extends ListComponentService<OrderItemVM, OrderBaseQu
       )
     );
   }
+
+  printSale(id: number): Observable<any> {
+    return this.generateReportOrder$({
+      id
+    });
+  }
+
+  openPDF(report: any): void {
+    const link = document.createElement('a');
+    link.href = report?.reportUrl;
+    link.target = '_black';
+    link.download = report?.name;
+    link.click();
+  }
 }

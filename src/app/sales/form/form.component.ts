@@ -22,6 +22,7 @@ import { isEqual } from 'lodash';
 import { Subscription } from 'rxjs';
 import { ToastService } from 'toast';
 
+import { ConfirmModalComponent } from '../../common/confirm-modal';
 import {
   CustomCurrencyMaskConfig,
 } from '../../common/currency-mask/mask-config';
@@ -315,9 +316,14 @@ export class FormComponent implements OnInit, OnDestroy {
               if (sale?.stage) {
                 this.updateShowPrint(sale.stage);
               }
-              this.form.reset();
-              this.clickClosed();
+              this.id = sale?.id || 0;
               this.toastService.success('¡Venta creada exitosamente!');
+              if (sale?.stage === StageSale.Paid) {
+                this.showConfirmPrint();
+              } else {
+                this.form.reset();
+                this.clickClosed();
+              }
             }
           )
       );
@@ -337,9 +343,13 @@ export class FormComponent implements OnInit, OnDestroy {
               if (sale?.stage) {
                 this.updateShowPrint(sale.stage);
               }
-              this.form.reset();
-              this.clickClosed();
               this.toastService.success('¡Venta actualizada exitosamente!');
+              if (sale?.stage === StageSale.Paid) {
+                this.showConfirmPrint();
+              } else {
+                this.form.reset();
+                this.clickClosed();
+              }
             }
           )
       );
@@ -400,11 +410,15 @@ export class FormComponent implements OnInit, OnDestroy {
     this.location.back();
   }
 
-  generateReportSale(): void {
+  generateReportSale(close = false): void {
     this.sub$.add(
       this.entityService.printSale(this.id).subscribe(
         (report) => {
           this.entityService.openPDF(report);
+          if (close) {
+            this.form.reset();
+            this.clickClosed();
+          }
         }
       )
     );
@@ -418,6 +432,28 @@ export class FormComponent implements OnInit, OnDestroy {
     });
     modal.componentInstance.closed.subscribe(() => {
       modal.close();
+    });
+  }
+
+  showConfirmPrint(): void {
+    const dialogRef = this.matDialog.open(ConfirmModalComponent, {
+      data: {
+        message: {
+          title: '¿Desea imprimir el comprobante?',
+        },
+      },
+      hasBackdrop: true,
+      disableClose: true,
+    });
+
+    dialogRef.componentInstance.closed.subscribe((res) => {
+      dialogRef.close();
+      if (res) {
+        this.generateReportSale(true);
+      } else {
+        this.form.reset();
+        this.clickClosed();
+      }
     });
   }
 

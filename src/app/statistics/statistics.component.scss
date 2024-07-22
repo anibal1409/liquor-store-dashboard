@@ -7,5 +7,40 @@
     gap: 1rem;
     flex-wrap: wrap;
   }
+
+  .card-statistics {
+    background-color: var(--primary-color);
+    color: #ffffff !important;
+    min-width: 15rem;
+    mat-card-header::ng-deep {
+      .mat-mdc-card-header-text {
+        width: 100% !important;
+      }
+      mat-card-title {
+        font-size: 2rem;
+        mat-icon {
+          font-size: 2rem;
+          width: 2rem;
+          height: 2rem;
+          margin-left: 1rem;
+          img {
+            width: 2rem;
+            height: 2rem;
+          }
+        }
+      }
+    }
+    mat-card-subtitle {
+      width: 100%;
+      .content-data {
+        color: #ffffff !important;
+        font-size: 2rem;
+      }
+      .recovery-link {
+        font-size: 0.75rem;
+        color: #ffffff !important;
+      }
+    }
+  }
 }
 
