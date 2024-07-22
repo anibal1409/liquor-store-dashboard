@@ -359,11 +359,13 @@ export class FormComponent implements OnInit, OnDestroy {
       this.sub$.add(
         this.entityService.findPatientByDocument$(customerDocument).subscribe(
           (customer) => {
-            if (customer?.id) {
+            if (customer && customer?.id) {
               this.form.patchValue({
                 customerId: customer.id,
                 customerName: customer.name,
               });
+            } else {
+              this.toastService.error('Cliente no encontrado.');
             }
           }
         )
